@@ -1,0 +1,1 @@
+function ajaxDados(a,n,t){$.ajax({type:"POST",url:a,myCallback:t,data:n,processData:!1,contentType:!1,beforeSend:function(a){},success:function(a){this.myCallback(a)},error:function(a){ret={ret:"",msg:"Erro na chamada AJAX."},this.myCallback(ret)},complete:function(a){}}).done((function(a){}))}

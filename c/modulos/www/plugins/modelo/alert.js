@@ -1,0 +1,1 @@
+alert('Esse é o Modelo ' + '{{conteudo}}');

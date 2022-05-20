@@ -1,0 +1,42 @@
+<!-- CHAT Dropdown Menu -->
+<li class="nav-item dropdown">
+    <a class="nav-link px-2 small" data-toggle="dropdown" href="#">
+        <i class="far fa-comments"></i>
+        <!-- <span class="badge badge-secondary navbar-badge">0</span> -->
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" style="width: 400px;">
+        <span class="dropdown-item dropdown-header">CHAT</span>
+        <div class="dropdown-divider"></div>
+
+        <div class="container-fluid">
+            <div class="row" style="width: 100%;">
+
+                <!-- 2142 - MATEUS -->
+                <div class="col-12 py-2">
+                    <a href="#" class="dropdown-item p-2" onclick="openChat(this)">
+                        <div class="media">
+                            <img src="{{page.userInfo.urlFoto}}" alt="{{page.userInfo.firstName}}" class="img-size-50 m-1 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    {{page.userInfo.fullName}}
+                                    <span class="float-right text-sm text-muted"><i class="fas fa-circle"></i></span>
+                                </h3>
+                                <small class="text-sm"><i class="fas fa-phone-alt"></i> (35) 99326-5491</small><br>
+                                <small><i class="fas fa-envelope"></i> mateus.brust@coopama.com.br</small><br>
+                                <small class="text-sm text-muted">Setor de Tecnologia da Informação</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+
+        
+
+
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item dropdown-footer">Em breve Mensagens</a>
+    </div>
+</li>

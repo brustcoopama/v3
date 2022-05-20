@@ -1,0 +1,61 @@
+{% block corpo %}
+{# A view é a última "else"
+DESENHA O POST 
+********************************************************************************************************* #}
+{% if global.attr[0] == 'post' and global.permissions.post %}
+
+{{page.html | raw}}
+
+{# DESENHA O PUT
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'put' and global.permissions.put %}
+
+{{page.html | raw}}
+
+{# DESENHA O GET
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'get' and global.permissions.get %}
+
+{{page.html | raw}}
+
+{# DESENHA O GETFULL
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'getfull' and global.permissions.getFull %}
+
+{{page.html | raw}}
+
+{# DESENHA O DELETE
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'delete' and global.permissions.delete %}
+
+{{page.html | raw}}
+
+{# DESENHA O TEST
+********************************************************************************************************* #}
+{% elseif global.attr[0] == 'test' and global.permissions.test %}
+
+{{page.html | raw}}
+
+{# DESENHA A VIEW
+********************************************************************************************************* #}
+{% elseif global.permissions.index %}
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="m-3 p-3" style="background-color: #bb3;">Página Modelo</div>
+        <p>{{page.html | raw}}</p>
+    </div>
+</div>
+
+
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <h3>Sem permissão para acessar esta página.</h3>
+        <p>Contate o administrador.</p>
+    </div>
+</div>
+{%endif%}
+{% endblock %}

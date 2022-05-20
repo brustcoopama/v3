@@ -1,0 +1,9 @@
+<!-- Sistema de feedback. -->
+{% for key, item in msgs %}
+<div class="alert alert-{{item.type}} alert-dismissible fade show mb-1 p-1 pl-2 pr-5" role="alert">
+    <strong>{{item.title}}</strong> {{item.msg|raw}}
+    <button type="button" class="close p-1 mr-3" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
