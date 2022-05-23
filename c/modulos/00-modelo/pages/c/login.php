@@ -489,15 +489,15 @@ class LoginControllerPage extends \moduloControllers\Page
         $login = 'brust';
         $senha = '123456';
 
-        $this->params['security']['restrictPage'] = '/00-modelo/modelo-restrito/';
+        $this->params['security']['restrictPage'] = '/00-modelo/login/';
 
         // Conexão OFF BD.
         // if (!$_SESSION[$sessionName])
-        //     $this->logarOffBD($sessionName, $login, $senha);
+            // $this->logarOffBD('teste', 'admin', 'admin');
         // Conexão BD.
 
-
-        print_r($this->logarBD($sessionName, $login, $senha));
+        if (!$_SESSION[$sessionName])
+            $this->logarBD($sessionName, $login, $senha);
 
         // Deslogar.
         // $this->deslogar();

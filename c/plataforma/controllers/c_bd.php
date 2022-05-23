@@ -867,6 +867,10 @@ class Bd
 		$type = 'EXECUTE STH';
 		self::gravaLog($obs, $type, $sql, 'Personalizado', $db['CONN_ID']);
 
+		// Verifica se não é SELECT e cria feedback.
+		if (!strpos($sql, "ELECT"))
+			\classes\FeedBackMessagens::add('success', 'Sucesso.', 'SQL executado com sucesso.');
+
 		// Caso ocorra tudo corretamente.
 		return $sth->fetchAll(\PDO::FETCH_ASSOC);
 	}

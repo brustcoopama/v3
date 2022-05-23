@@ -347,14 +347,14 @@ class Security extends \controllers\Plataforma
      */
     public function logarBD($sessionName, $login, $senha, $options = null)
     {
-
+        // Criptografa senha.
         $senha = hash('sha256', $senha);
 
         // Guarda usuário.
         $infoUser = \BdLogin::verificaLogin($login, $senha);
 
         // Acessa BdLogin
-        // todo ajustar para pegar infoUser do BD.
+        // todo ajustar para pegar grupos do BD.
         $grupos = array(); // \bds\BdPermissions::grupos($infoUser['id']);
 
         // todo ajustar para pegar permissões de grupo e user do BD.
@@ -370,9 +370,9 @@ class Security extends \controllers\Plataforma
                 'name'        => $value['name'],
                 'urlPage'     => $value['urlPage'],
                 'obs'         => $value['obs'],
-                'permission' => $value['permission'],
+                'permission'  => $value['permission'],
             ];
-            $permissionsGroups[$value] = $tmp;
+            $permissionsGroups[$value['idEntity']] = $tmp;
         }
         // Joga permissões de grupo organizadas e padronizadas dentro de info user.
         $infoUser['groups'] = $permissionsGroups;
@@ -523,7 +523,7 @@ class Security extends \controllers\Plataforma
      */
     protected function permissions()
     {
-        // Permissão default.
+        // Permissão default. (Sem permissão)
         $permission = '000000000';
 
         // Permissão inicial do usuário.
@@ -565,6 +565,11 @@ class Security extends \controllers\Plataforma
             // Verifica se tem o grupo na controller.
             $permission = $this->somaPermissions($permission, (string)$value['permission']);
         }
+
+        
+        // todo VERIFICA SE USUÁRIO ATUAL TEM PERMISSÃO PARA PÁGINA ATUAL?
+        // USUÁRIO BD
+
 
         // Cria o vetor associativo de permissões para ser usado nos parâmetros.
         $this->createInfoUserPermissions($permission);
