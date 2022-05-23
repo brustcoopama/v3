@@ -9,7 +9,7 @@
  * Na função index, é realizada toda a programação da página.
  * As outras funções (menus) são chamados conforme REST utilizando a própria URL.
  */
-class ModeloPageControllerPage extends \moduloControllers\Page
+class ModeloBdControllerPage extends \moduloControllers\Page
 {
 
 
@@ -229,7 +229,7 @@ class ModeloPageControllerPage extends \moduloControllers\Page
             // 'api/00-modelo' => 'BdTeste',
 
             // Plataforma
-            // 'plataforma' => 'BdTeste',
+            'plataforma' => 'BdModelo',
         ];
 
         /**
@@ -482,6 +482,64 @@ class ModeloPageControllerPage extends \moduloControllers\Page
 
         // Exibe na tela todos os parâmetros que podem ser usados no Twig.
         $this->params['info']['html'] .= \controllers\Render::objPlatforma('show_params', $this->params);
+
+        // todo TESTES de uso de BD
+        // TESTE: Cria tabelas
+        // BdLog::tableCreate();
+        BdModelo::tableCreate();
+        
+        // TESTE: Deleta tabelas.
+        // BdModelo::tableDelete();
+        // BdLog::tableDelete();
+
+        // Teste de gravação de log.        [OK]
+        // BdLog::gravaLog('Teste', 'teste', 'teste');
+
+        // Teste insersão de registro.      [OK]
+        // $fields = [
+        //     'ex_tinyint' => 89,
+        // ];
+        // BdModelo::adicionar($fields);
+
+        // Teste insersão de registro.      [OK]
+        // $fields = [
+        //     'ex_tinyint' => 99,
+        // ];
+        // BdModelo::atualizar(1, $fields);
+
+        // Teste de selecionar tudo.        [OK]
+        // print_r(BdModelo::selecionarTudo());
+
+        // Teste de selecionar por ID.      [OK]
+        // print_r(BdModelo::selecionarPorId(2));
+
+        // Teste de deletar registro.       [OK]
+        // BdModelo::deletar(7);
+        
+        // Teste de Deletar por status. [OK]
+        // BdModelo::deletarStatus(9);
+
+        // Teste de Quantidade de registros. [OK]
+        // print_r(BdModelo::quantidade());
+
+        // Teste exibe lista de tableas. [OK]
+        // print_r(BdModelo::getTables());
+
+        // Teste exibe nome completo de tabela. [OK]
+        // print_r(BdModelo::fullTableName('modelo'));
+
+        // Teste executeQuery.
+        // print_r(BdModelo::queryPersonalizada(5));
+
+        // TESTE Token [OK]
+        // Monta os valores para criação do token.
+        // $url = $this->params['infoUrl']['url_friendly'];
+        // $func = __FUNCTION__;
+        // $token = \classes\TokenPlataforma::createPage($url, $func);
+        // print_r($token);
+        // echo '<br>';
+        // print_r($this->params['info']['token']);
+
 
         return true;
     }

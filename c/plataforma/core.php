@@ -112,6 +112,7 @@ class Core
 	{
 		// Carrega arquivo de configurações.
 		require_once 'config.php';
+		
 		return true;
 	}
 
@@ -197,6 +198,7 @@ class Core
 		// Manipula sessão.
 		require_once VC_PATHS['P_PATH_CLASSES'] . 'Session.php';
 		require_once VC_PATHS['P_PATH_CLASSES'] . 'FeedBackMessagens.php';
+		require_once VC_PATHS['P_PATH_CLASSES'] . 'TratamentoDados.php';
 
 		// Finaliza função.
 		return true;

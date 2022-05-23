@@ -477,6 +477,9 @@ class DefaultControllerPage extends \moduloControllers\Page
 
         $this->params['info']['html'] = '<br>Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . __CLASS__ . '</b>.<br>';
 
+        // Exibe na tela todos os parâmetros que podem ser usados no Twig.
+        $this->params['info']['html'] .= \controllers\Render::objPlatforma('show_params', $this->params);
+
         return true;
     }
 

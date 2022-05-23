@@ -26,7 +26,7 @@ class FeedBackMessagens
 
         // Caso tenha mensagens, cria html.
         if (isset(Self::$messages[0])) {
-            $html = \controllers\Render::renderObj('classes/feedbackmessagens', ['msgs' => Self::$messages]);
+            $html = \controllers\Render::obj('classes/feedbackmessagens', ['msgs' => Self::$messages]);
         }
 
         // Retorna o html com as mensagens.

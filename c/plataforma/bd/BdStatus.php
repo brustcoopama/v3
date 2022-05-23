@@ -1,6 +1,6 @@
 <?php
 
-class BdModelo extends \controllers\Bd
+class BdStatus extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdModelo extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'modelo';
+    private static $tableName = 'status';
 
 
     /**
@@ -59,32 +59,15 @@ class BdModelo extends \controllers\Bd
             "id                 INT NOT NULL AUTO_INCREMENT primary key",
 
             // Informações do registro do tipo numérico.
-            "ex_tinyint         TINYINT NULL",      // Campo tipo Inteiro 1 bytes.
-            "ex_smallint        SMALLINT NULL",     // Campo tipo Inteiro 2 bytes.
-            "ex_mediumint       MEDIUMINT NULL",    // Campo tipo Inteiro 3 bytes.
-            "ex_int             INT NULL",          // Campo tipo Inteiro 4 bytes.
-            "ex_bigint          BIGINT NULL",       // Campo tipo Inteiro 8 bytes.
-            "ex_float           FLOAT(7,2) NULL",   // Campo tipo Flutuante 4 bytes.
-            "ex_double          DOUBLE(7,2) NULL",  // Campo tipo Flutuante 8 bytes.
-
-            // Informações do registro do tipo data.
-            "ex_date            DATE NULL",         // Campo tipo Data ('0000-00-00').
-            "ex_time            TIME NULL",         // Campo tipo Data ('00:00:00').
-            "ex_datetime        DATETIME NULL",     // Campo tipo Data e Hora ('0000-00-00 00:00:00').
-            "ex_timestamp       TIMESTAMP NULL",    // Campo tipo TimeStamp ('0000-00-00 00:00:00').
-            "ex_year            YEAR NULL",         // Campo tipo Ano (0000).
-
-            // Informações do registro do tipo data.
-            "ex_varchar         VARCHAR(255) NULL", // Campo tipo Texto.
-            "ex_text            TEXT NULL",         // Campo tipo Texto (256 bytes e 2000 parts).
-            "ex_mediumtext      MEDIUMTEXT NULL",   // Campo tipo Texto médio (256 bytes e 4000 parts).
-            "ex_longtext        LONGTEXT NULL",     // Campo tipo Texto longo (256 bytes e 13948 parts).
+            "nome               VARCHAR(45) NULL",
+            "statusGrupo        VARCHAR(90) NULL",    // Nome de um grupo de status para um determinado campo de outra tabela.
+            "idStatusPai        INT NULL",
 
             // Observações do registro (obrigatório).
             "obs                VARCHAR(255) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",          // Status pelo grupo ou [1] Ativo, [2] Inativo.
+            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
             "idLoginCreate      INT NULL",          // Login que realizou a criação.
             "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
             "idLoginUpdate      INT NULL",          // Login que realizou a edição.

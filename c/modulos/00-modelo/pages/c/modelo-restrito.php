@@ -9,7 +9,7 @@
  * Na função index, é realizada toda a programação da página.
  * As outras funções (menus) são chamados conforme REST utilizando a própria URL.
  */
-class ModeloPageControllerPage extends \moduloControllers\Page
+class ModeloRestritoControllerPage extends \moduloControllers\Page
 {
 
 

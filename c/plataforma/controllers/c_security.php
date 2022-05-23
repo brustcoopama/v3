@@ -348,8 +348,10 @@ class Security extends \controllers\Plataforma
     public function logarBD($sessionName, $login, $senha, $options = null)
     {
 
+        $senha = hash('sha256', $senha);
+
         // Guarda usuário.
-        $infoUser = null;
+        $infoUser = \BdLogin::verificaLogin($login, $senha);
 
         // Acessa BdLogin
         // todo ajustar para pegar infoUser do BD.
@@ -358,6 +360,7 @@ class Security extends \controllers\Plataforma
         // todo ajustar para pegar permissões de grupo e user do BD.
         // Monta as permissões de grupo padronizadas do usuário off BD.
         $permissionsGroups = array();
+
         // Percorre os ids de grupos.
         foreach ($grupos as $key => $value) {
             $tmp = [

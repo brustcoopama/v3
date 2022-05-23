@@ -388,6 +388,8 @@ class Plataforma
             // Carrega primeiramente a controller de Banco de Dados.
             require_once $this->params['paths']['P_PATH_CONTROLLERS'] . 'c_bd.php';
             require_once $this->params['paths']['P_PATH_BD'] . 'BdLog.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdLogin.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdStatus.php';
 
             // Carrega os BDs passados nos parâmetros da controler. 
             foreach ($this->params['bd'] as $key => $value) {

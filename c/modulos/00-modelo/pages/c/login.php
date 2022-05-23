@@ -486,25 +486,30 @@ class LoginControllerPage extends \moduloControllers\Page
         // Credenciais
         $sessionName = $this->params['security']['sessionName'];
         // $sessionName = 'session2';
-        $login = 'grupo';
-        $senha = 'grupo';
+        $login = 'brust';
+        $senha = '123456';
 
-        $this->params['security']['restrictPage'] = '/00-modelo/login/teste';
+        $this->params['security']['restrictPage'] = '/00-modelo/modelo-restrito/';
 
         // Conexão OFF BD.
         // if (!$_SESSION[$sessionName])
         //     $this->logarOffBD($sessionName, $login, $senha);
-
         // Conexão BD.
-        // $this->logarBD($login, $senha);
+
+
+        print_r($this->logarBD($sessionName, $login, $senha));
 
         // Deslogar.
         // $this->deslogar();
-        $this->deslogar($sessionName);
-        // $this->deslogar('session2');
+        // $this->deslogar($sessionName);
+        // $this->deslogar('admin');
+        // \classes\Session::destroy(); // Limpa trudo.
         // exit;
 
-        // print_r($_SESSION);
+        print_r($_SESSION);
+
+        // Exibe na tela todos os parâmetros que podem ser usados no Twig.
+        $this->params['info']['html'] .= \controllers\Render::objPlatforma('show_params', $this->params);
 
 
 

@@ -84,14 +84,14 @@ class BdModelo extends \controllers\Bd
             "obs                VARCHAR(255) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",          // Status pelo grupo ou [1] Ativo, [2] Inativo.
+            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
             "idLoginCreate      INT NULL",          // Login que realizou a criação.
             "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
             "idLoginUpdate      INT NULL",          // Login que realizou a edição.
             "dtUpdate           DATETIME NULL",     // Data em que registro foi alterado.
 
         ];
-        return Self::createTable(Self::$tableName, $fields, Self::$conn);
+        return self::createTable(self::$tableName, $fields, self::$conn);
     }
 
 
@@ -103,7 +103,7 @@ class BdModelo extends \controllers\Bd
     public static function tableDelete()
     {
         // Deleta a tabela.
-        Self::deleteTable(Self::$tableName, Self::$conn);
+        return self::deleteTable(self::$tableName, self::$conn);
     }
 
 
@@ -134,7 +134,7 @@ class BdModelo extends \controllers\Bd
     public static function adicionar($fields)
     {
         // Retorno da função insert préviamente definida. (true, false)
-        return Self::insert(Self::$tableName, $fields, Self::$conn);
+        return self::insert(self::$tableName, $fields, self::$conn);
     }
 
 
@@ -150,7 +150,7 @@ class BdModelo extends \controllers\Bd
     public static function atualizar($id, $fields)
     {
         // Retorno da função update préviamente definida. (true, false)
-        return Self::update(Self::$tableName, $id, $fields, Self::$conn);
+        return self::update(self::$tableName, $id, $fields, self::$conn);
     }
 
 
@@ -166,7 +166,7 @@ class BdModelo extends \controllers\Bd
     public static function deletar($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return Self::delete(Self::$tableName, $id, Self::$conn);
+        return self::delete(self::$tableName, $id, self::$conn);
     }
 
 
@@ -181,7 +181,7 @@ class BdModelo extends \controllers\Bd
     public static function deletarStatus($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return Self::deleteStatus(Self::$tableName, $id, Self::$conn);
+        return self::deleteStatus(self::$tableName, $id, self::$conn);
     }
 
 
@@ -198,7 +198,7 @@ class BdModelo extends \controllers\Bd
     public static function selecionarTudo($posicao = null, $qtd = 10)
     {
         // Retorno da função selectAll préviamente definida. (true, false)
-        return Self::selectAll(Self::$tableName, $posicao, $qtd, Self::$conn);
+        return self::selectAll(self::$tableName, $posicao, $qtd, self::$conn);
     }
 
 
@@ -214,7 +214,7 @@ class BdModelo extends \controllers\Bd
     public static function selecionarPorId($id)
     {
         // Retorno da função selectById préviamente definida. (array)
-        return Self::selectById(Self::$tableName, $id, Self::$conn);
+        return self::selectById(self::$tableName, $id, self::$conn);
     }
 
 
@@ -227,7 +227,7 @@ class BdModelo extends \controllers\Bd
     public static function quantidade()
     {
         // Retorno da função update préviamente definida. (true, false)
-        return Self::count(Self::$tableName, Self::$conn);
+        return self::count(self::$tableName, self::$conn);
     }
 
 
@@ -242,16 +242,16 @@ class BdModelo extends \controllers\Bd
     public static function queryPersonalizada($id)
     {
         // Ajusta nome real da tabela.
-        $table = Self::fullTableName(Self::$tableName, Self::$conn);
-        // $tableInnerMidia = Self::fullTableName('midia', Self::$conn);
-        // $tableInnerLogin = Self::fullTableName('login', Self::$conn);
-        // $tableInnerUsers = Self::fullTableName('users', Self::$conn);
+        $table = self::fullTableName(self::$tableName, self::$conn);
+        // $tableInnerMidia = self::fullTableName('midia', self::$conn);
+        // $tableInnerLogin = self::fullTableName('login', self::$conn);
+        // $tableInnerUsers = self::fullTableName('users', self::$conn);
 
         // Monta SQL.
         $sql = "SELECT * FROM $table WHERE id = '$id' LIMIT 1;";
 
         // Executa o select
-        $r = Self::executeQuery($sql, Self::$conn);
+        $r = self::executeQuery($sql, self::$conn);
 
         // Verifica se não teve retorno.
         if (!$r)

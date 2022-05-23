@@ -838,12 +838,37 @@ class Bd
 			$r = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		}
 
-
-
 		// Caso ocorra tudo corretamente.
 		if (is_array($r)) {
 			return $r;
 		}
+	}
+
+
+	/**
+	 * Executa o sth com os demais parametros e log.
+	 *
+	 * @param STH $sth
+	 * @param string $sql
+	 * @param array $db
+	 * @return array|int
+	 */
+	protected static function executeSth($sth, $sql, $db)
+	{
+		// Executa query de criação.
+		if (!$sth->execute()) {
+			// FeedBack
+			\classes\FeedBackMessagens::add('danger', 'Erro.', 'Não foi possível executar a query. ' . print_r($sth->errorInfo(), true));
+			return false;
+		}
+
+		// LOG Das ações na plataforma.
+		$obs = 'Classe: ' . get_called_class() . ' Função ' . __FUNCTION__ . '.';
+		$type = 'EXECUTE STH';
+		self::gravaLog($obs, $type, $sql, 'Personalizado', $db['CONN_ID']);
+
+		// Caso ocorra tudo corretamente.
+		return $sth->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 
@@ -1031,36 +1056,6 @@ class Bd
      // todo OLD - Avaliar e limpar.
 	 * ********************************************************************************************
 	 */
-
-
-	/**
-	 * Executa o sth com os demais parametros e log.
-	 *
-	 * @param STH $sth
-	 * @param string $sql
-	 * @param array $db
-	 * @return array|int
-	 */
-	protected static function executeSth($sth, $sql, $db)
-	{
-		// Executa query de criação.
-		if (!$sth->execute()) {
-			// die("\n\nNão foi possível executar query.\n\n" . print_r($conn->errorInfo(), true));
-			\classes\FeedBackMessagens::add('danger', 'Erro.', 'Não foi possível executar a query. ' . print_r($sth->errorInfo(), true));
-			return false;
-		}
-		// LOG Das ações na plataforma.
-		self::gravaLog([
-			'conn' => $db['CONN_ID'],
-			'sql'  => $sql,
-			'tipo' => 'EXECUTE',
-			'obs'  => 'Classe: ' . get_called_class() . ' Função ' . __FUNCTION__,
-		]);
-		if (!strpos($sql, "ELECT"))
-			\classes\FeedBackMessagens::add('success', 'Sucesso.', 'STH executado com sucesso.');
-		// Caso ocorra tudo corretamente.
-		return $sth->fetchAll(\PDO::FETCH_ASSOC);
-	}
 
 
 	/**

@@ -14,9 +14,7 @@ Nome: default
 Nome que será incluido na URL, podendo ter mais aspectos estéticos.
 O nome pode conter espaços e ífens.
 
-    Ex.: "fale conosco".
     Ex.: "fale-conosco".
-    Ex.: "faleconosco".
 O nome deverá ser minúsculo.
 
 -- EXTENSÃO
