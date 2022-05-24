@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use BdLoginsGroups;
+use BdPermissions;
 use Respect\Validation\Rules\Length;
 
 /**
@@ -283,8 +285,13 @@ class Security extends \controllers\Plataforma
      * @param string $senha
      * @return void
      */
-    public function logarOffBD($sessionName, $login, $senha, $options = null)
+    public function logarOffBD($login, $senha, $options = null, $sessionName = null)
     {
+
+        // Se não foi passado sessão, loga na padrão do módulo.
+        if (!$sessionName) {
+            $sessionName = $this->params['security']['sessionName'];
+        }
 
         // Guarda usuário.
         $infoUser = null;
@@ -345,15 +352,27 @@ class Security extends \controllers\Plataforma
      * @param string $senha
      * @return void
      */
-    public function logarBD($sessionName, $login, $senha, $options = null)
+    public function logarBD($login, $senha, $options = null, $sessionName = null)
     {
+        // Verifica se controller usa BD.
+        if (!$this->params['config']['bd']) {
+            // FeedBack
+            \classes\FeedBackMessagens::addWarning('Banco de Dados', 'Ative o banco de dados na controller para poder usar o login via BD.');
+            return true;
+        }
+
+        // Se não foi passado sessão, loga na padrão do módulo.
+        if (!$sessionName) {
+            $sessionName = $this->params['security']['sessionName'];
+        }
+
         // Criptografa senha.
         $senha = hash('sha256', $senha);
 
         // Guarda usuário.
-        $infoUser = \BdLogin::verificaLogin($login, $senha);
+        $infoUser = \BdLogins::verificaLogin($login, $senha);
 
-        // Acessa BdLogin
+        // Acessa BdLogins
         // todo ajustar para pegar grupos do BD.
         $grupos = array(); // \bds\BdPermissions::grupos($infoUser['id']);
 
@@ -374,11 +393,22 @@ class Security extends \controllers\Plataforma
             ];
             $permissionsGroups[$value['idEntity']] = $tmp;
         }
-        // Joga permissões de grupo organizadas e padronizadas dentro de info user.
-        $infoUser['groups'] = $permissionsGroups;
 
         // Verifica se achou usuário.
         if ($infoUser) {
+
+            // Informações default de usuário. Garante que terá no mínimo esses campos.
+            $infoUserDefault = [
+                'id'         => $infoUser['id'],      // Identificador único do usuário.
+                'nome'       => $infoUser['fullName'],      // Nome para ser exibido.
+                'login'      => $infoUser['userName'],      // Identificação de usuário (user, matricula, email, id).
+                'permission' => '000000000',          // Permissões personalizadas do usuário logado. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
+                'groups'     => $permissionsGroups,   // Grupos que usuário pertence.
+                'urlTarget'  => $infoUser['initialUrl'],                   // Redireciona para url após o login.
+            ];
+
+            // Mescla com as informações recebidas.
+            $infoUser = array_merge($infoUserDefault, $infoUser);
 
             // Faz a parte de criar a sessão com todas as informações passadas.
             $this->createSession($sessionName, $infoUser, $options);
@@ -528,6 +558,27 @@ class Security extends \controllers\Plataforma
 
         // Permissão inicial do usuário.
         $permission = (string)$this->params['infoUser']['permission'];
+        
+        // Busca no banco de dados as permissões para a página atual.
+        if ($this->params['config']['bd']) {
+            
+            // Carrega os grupos do usuário logado.
+            $this->params['infoUser']['groups'] = BdLoginsGroups::selecionarPorLogin($this->params['infoUser']['id']);
+
+            $in = '';
+            // Somar permissões de grupos do usuário.
+            foreach ($this->params['infoUser']['groups'] as $key => $value) {
+                // Verifica se tem o grupo na controller.
+                $in .= ',' . $value['idGroup'];
+            }
+            $in[0] = ' ';
+
+            // Pesquisa todas as permissões para página atual e com os grupos do usuário logado.
+            $r = BdPermissions::selecionarPorIdGrupoUrl($this->params['infoUser']['id'], $in, $this->params['infoUrl']['url_friendly']);
+
+            // Acrescenta as permissões do BD.
+            $permission = '111111111'; // todo VERIFICAR AQUI. PEGAR VALORES DE $R E FAZER A SOMA DAS PERMISSÕES.
+        }
 
         // Caso usuário já tenha todas as permissões sai da função.
         if ($this->fullPermissions($permission)) {

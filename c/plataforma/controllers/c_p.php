@@ -69,6 +69,9 @@ class Plataforma
 
         // Carrega as dependências de segurança personalizadas.
         $this->carregaSecurity();
+
+        // Carrega as classes de Banco de Dados.
+        $this->carregaBDs();
         
 		// Inicia segurança. Carrega todas as informações necessárias.
 		$this->startSecurity();
@@ -387,9 +390,11 @@ class Plataforma
 
             // Carrega primeiramente a controller de Banco de Dados.
             require_once $this->params['paths']['P_PATH_CONTROLLERS'] . 'c_bd.php';
-            require_once $this->params['paths']['P_PATH_BD'] . 'BdLog.php';
-            require_once $this->params['paths']['P_PATH_BD'] . 'BdLogin.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdLogs.php';
             require_once $this->params['paths']['P_PATH_BD'] . 'BdStatus.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdLogins.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdLoginsGroups.php';
+            require_once $this->params['paths']['P_PATH_BD'] . 'BdPermissions.php';
 
             // Carrega os BDs passados nos parâmetros da controler. 
             foreach ($this->params['bd'] as $key => $value) {

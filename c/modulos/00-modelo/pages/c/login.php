@@ -481,23 +481,54 @@ class LoginControllerPage extends \moduloControllers\Page
         $this->params['info']['html'] = '<br>Implementar função <b>' . __FUNCTION__ . '</b> da classe <b>' . __CLASS__ . '</b>.<br>';
 
         /**
-         * TESTE DE LOGIN
+         * DESLOGAR
+         */
+        // Verifica se é para sair da sessão.
+        if (isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'sair') {
+            // Mata a sessão do módulo atual.
+            $this->deslogar();
+        }
+
+        /**
+         * LOGAR
+         */
+        // Verifica se é para sair da sessão.
+        if (isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'now') {
+            // Monta informações de login.
+            $login = 'admin';
+            $senha = 'admin';
+            // Cria sessão.
+            $this->logarOffBD($login, $senha);
+        }
+
+
+        $this->params['info']['html'] .= \controllers\Render::objPlatforma('form_login');
+
+        if (isset($_POST['f-login']) && isset($_POST['f-senha'])) {
+             // Monta informações de login.
+             $login = $_POST['f-login'];
+             $senha = $_POST['f-senha'];
+             // Cria sessão.
+             $this->logarBD($login, $senha);
+        }
+
+
+        /**
+         * todo - TESTE DE LOGIN
          */
         // Credenciais
         $sessionName = $this->params['security']['sessionName'];
         // $sessionName = 'session2';
-        $login = 'brust';
-        $senha = '123456';
 
         $this->params['security']['restrictPage'] = '/00-modelo/login/';
 
         // Conexão OFF BD.
         // if (!$_SESSION[$sessionName])
-            // $this->logarOffBD('teste', 'admin', 'admin');
+            // $this->logarOffBD('admin', 'admin');
         // Conexão BD.
 
-        if (!$_SESSION[$sessionName])
-            $this->logarBD($sessionName, $login, $senha);
+        // if (!$_SESSION[$sessionName])
+        //     $this->logarBD($login, $senha);
 
         // Deslogar.
         // $this->deslogar();

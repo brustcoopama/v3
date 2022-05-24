@@ -1,6 +1,6 @@
 <?php
 
-class BdModelo extends \controllers\Bd
+class BdLogins extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdModelo extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'modelo';
+    private static $tableName = 'logins';
 
 
     /**
@@ -56,35 +56,43 @@ class BdModelo extends \controllers\Bd
         // Monta os campos da tabela.
         $fields = [
             // Identificador Padrão (obrigatório).
-            "id                 INT NOT NULL AUTO_INCREMENT primary key",
+            "id               INT NOT NULL AUTO_INCREMENT primary key",
 
-            // Informações do registro do tipo numérico.
-            "ex_tinyint         TINYINT NULL",      // Campo tipo Inteiro 1 bytes.
-            "ex_smallint        SMALLINT NULL",     // Campo tipo Inteiro 2 bytes.
-            "ex_mediumint       MEDIUMINT NULL",    // Campo tipo Inteiro 3 bytes.
-            "ex_int             INT NULL",          // Campo tipo Inteiro 4 bytes.
-            "ex_bigint          BIGINT NULL",       // Campo tipo Inteiro 8 bytes.
-            "ex_float           FLOAT(7,2) NULL",   // Campo tipo Flutuante 4 bytes.
-            "ex_double          DOUBLE(7,2) NULL",  // Campo tipo Flutuante 8 bytes.
+            // Identificadores.
+            "matricula        INT NULL",
+            "idUser           INT NULL",                // Id do usuário. Tabela com informações detalhadas da entidade.
+            "idOld            INT NULL",                // Id identificador de tabela antiga.
 
-            // Informações do registro do tipo data.
-            "ex_date            DATE NULL",         // Campo tipo Data ('0000-00-00').
-            "ex_time            TIME NULL",         // Campo tipo Data ('00:00:00').
-            "ex_datetime        DATETIME NULL",     // Campo tipo Data e Hora ('0000-00-00 00:00:00').
-            "ex_timestamp       TIMESTAMP NULL",    // Campo tipo TimeStamp ('0000-00-00 00:00:00').
-            "ex_year            YEAR NULL",         // Campo tipo Ano (0000).
+            // Chaves externas  
+            "idMenu           INT NULL",                // Menu personalizado.
 
-            // Informações do registro do tipo data.
-            "ex_varchar         VARCHAR(255) NULL", // Campo tipo Texto.
-            "ex_text            TEXT NULL",         // Campo tipo Texto (256 bytes e 2000 parts).
-            "ex_mediumtext      MEDIUMTEXT NULL",   // Campo tipo Texto médio (256 bytes e 4000 parts).
-            "ex_longtext        LONGTEXT NULL",     // Campo tipo Texto longo (256 bytes e 13948 parts).
+            // Informações básicas
+            "fullName         VARCHAR(160) NULL",       // Nome Completo.
+            "firstName        VARCHAR(40) NULL",        // Primeiro nome.
+            "lastName         VARCHAR(40) NULL",        // Último nome.
+
+            // Login - Pode ser usado para realizar o login.
+            "userName         VARCHAR(32) NULL",        // User para logar.
+            "email            VARCHAR(160) NULL",       // E-mail principal da coopama.
+            "telefone         VARCHAR(11) NULL",        // Telefone (numero only).
+            "cpf              VARCHAR(11) NULL",        // CPF.
+            "cnpj             VARCHAR(11) NULL",        // CNPJ.
+
+            // Senha
+            "senha            VARCHAR(64) NOT NULL",    // criptografia hash('sha256', $senha).
+            "expirationDays   INT(11) NULL",
+            "strongPass       BOOLEAN NULL",
+            "dateChangePass   DATETIME NULL",
+
+            // Controle
+            "initialUrl       VARCHAR(255) NOT NULL",   // Redireciona para esta URL após logado. (Personalização)
+            "menu             MEDIUMTEXT NOT NULL",     // Menu Personalizado serialize.
 
             // Observações do registro (obrigatório).
             "obs                VARCHAR(255) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
+            "idStatus           INT NULL",          // Status grupo: "login/idStatus" ou [1] Ativo, [2] Inativo.
             "idLoginCreate      INT NULL",          // Login que realizou a criação.
             "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
             "idLoginUpdate      INT NULL",          // Login que realizou a edição.
@@ -103,7 +111,7 @@ class BdModelo extends \controllers\Bd
     public static function tableDelete()
     {
         // Deleta a tabela.
-        return self::deleteTable(self::$tableName, self::$conn);
+        self::deleteTable(self::$tableName, self::$conn);
     }
 
 
@@ -239,6 +247,60 @@ class BdModelo extends \controllers\Bd
      * @param PDO $conn
      * @return int
      */
+    public static function verificaLogin($login, $senha)
+    {
+        // Obtém dados de conexão.
+        $db = self::getConn(self::$conn);
+        if (!$db['DB']) {
+            return false;
+        }
+
+        // Obtém select padrão.
+        $sql = self::fullSelect();
+
+        // Acrescenta where no SQL.
+        $sql .= "
+        WHERE (
+            email = :email OR
+            userName = :userName OR
+            matricula = :matricula
+            ) AND
+            (senha = :senha)
+            AND
+            idStatus != 2
+        LIMIT 1;
+        ";
+
+        $sth = $db['CONN']->prepare($sql);
+
+        $login = \classes\TratamentoDados::limpaInject($login);
+
+        // Substitui os valores. (segurança de sql injection)
+        $sth->bindValue(":email", $login);
+        $sth->bindValue(":userName", $login);
+        $sth->bindValue(":matricula", $login);
+        $sth->bindValue(":senha", $senha);
+
+        // Retorna
+        $r = self::executeSth($sth, $sql, $db, self::$conn);
+
+        // Verifica se não teve retorno.
+        if (!$r)
+            return false;
+
+        // Retorna primeira linha.
+        return $r[0];
+    }
+
+
+    /**
+     * Modelo para criação de uma query personalizada.
+     * É possível fazer inner joins e filtros personalizados.
+     * ATENÇÃO: Não deixar brechas para SQL Injection.
+     *
+     * @param PDO $conn
+     * @return int
+     */
     public static function queryPersonalizada($id)
     {
         // Ajusta nome real da tabela.
@@ -259,6 +321,53 @@ class BdModelo extends \controllers\Bd
 
         // Retorna primeira linha.
         return $r[0];
+    }
+
+
+    /**
+     * SQL padrão.
+     * Monta select padrão com todos os campos e junções.
+     *
+     * @return string
+     */
+    private static function fullSelect()
+    {
+        // Ajusta nome real da tabela.
+        $tableName = self::fullTableName(self::$tableName, self::$conn);
+
+        // Monta select padrão com todos os campos e junções.
+        $sql = "
+        SELECT
+            id,
+            matricula,
+            idUser,
+            idOld,
+            idMenu,
+            fullName,
+            firstName,
+            lastName,
+            userName,
+            email,
+            telefone,
+            cpf,
+            cnpj,
+            expirationDays,
+            strongPass,
+            dateChangePass,
+            initialUrl,
+            menu,
+            obs,
+            idStatus,
+            idLoginCreate,
+            dtCreate,
+            idLoginUpdate,
+            dtUpdate
+
+        FROM $tableName 
+
+        ";
+
+        return $sql;
     }
 
 
@@ -311,18 +420,32 @@ class BdModelo extends \controllers\Bd
         // Insert modelo.
         $r = self::adicionar([
             // Informações do registro.
-            'campo'         => 'valor',
+            'matricula' => '2142',
+
+            'fullName'  => 'Mateus Rocha Brust',
+            'firstName' => 'Mateus',
+            'lastName'  => 'Brust',
+
+            'userName' => 'brust',
+            'email'    => 'mateus.brust@coopama.com.br',
+            'telefone' => '31993265491',
+            'cpf'      => '10401141640',
+
+            'senha'          => hash('sha256', '123456'),
+            'expirationDays' => '360',
+            'strongPass'     => false,
+            'dateChangePass' => '2023-05-23',
 
             // Observações do registro (obrigatório).
-			'obs'           => 'Status ativo Geral',
+            'obs'           => 'Insert Automático.',
 
             // Controle padrão do registro (obrigatório).
-			'idStatus'      => 1,
-			'idLoginCreate' => 1,
-			'dtCreate'      => date("Y-m-d H:i:s"),
-			'idLoginUpdate' => 1,
-			'dtUpdate'      => date("Y-m-d H:i:s"),
-		]);
+            'idStatus'      => 1,
+            'idLoginCreate' => 1,
+            'dtCreate'      => date("Y-m-d H:i:s"),
+            'idLoginUpdate' => 1,
+            'dtUpdate'      => date("Y-m-d H:i:s"),
+        ]);
 
 
         // Finaliza a função.

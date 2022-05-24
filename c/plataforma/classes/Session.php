@@ -46,13 +46,13 @@ class Session
     {
         // Informações default de usuário. Garante que terá no mínimo esses campos.
         $infoUserDefault = [
-            'id'          => '0',           // Identificador único do usuário.
-            'nome'        => 'guest',       // Nome para ser exibido.
-            'login'       => 'guest',       // Identificação de usuário (user, matricula, email, id).
-            'senha'       => '',            // Senha usada para logar. Depois é retirada da sessão.
-            'permission'  => '000000000',   // Permissões personalizadas do usuário logado. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
-            'groups'      => [],            // Grupos que usuário pertence.
-            'urlTarget' => '',            // Redireciona para url após o login.
+            'id'         => '0',           // Identificador único do usuário.
+            'nome'       => 'guest',       // Nome para ser exibido.
+            'login'      => 'guest',       // Identificação de usuário (user, matricula, email, id).
+            'senha'      => '',            // Senha usada para logar. Depois é retirada da sessão.
+            'permission' => '000000000',   // Permissões personalizadas do usuário logado. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
+            'groups'     => [],            // Grupos que usuário pertence.
+            'urlTarget'  => '',            // Redireciona para url após o login.
         ];
 
         // Mescla com as informações recebidas.

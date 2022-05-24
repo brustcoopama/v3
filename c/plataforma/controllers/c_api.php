@@ -120,9 +120,6 @@ class Api extends \controllers\Security
      */
     public function carregaDependencias()
     {
-        // Carrega as classes de Banco de Dados.
-        $this->carregaBDs();
-
         // Carrega as classes para funções específicas.
         $this->carregaClasses();
 

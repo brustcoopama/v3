@@ -1,6 +1,6 @@
 <?php
 
-class BdModelo extends \controllers\Bd
+class BdLogs extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdModelo extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'modelo';
+    private static $tableName = 'logs';
 
 
     /**
@@ -58,40 +58,30 @@ class BdModelo extends \controllers\Bd
             // Identificador Padrão (obrigatório).
             "id                 INT NOT NULL AUTO_INCREMENT primary key",
 
-            // Informações do registro do tipo numérico.
-            "ex_tinyint         TINYINT NULL",      // Campo tipo Inteiro 1 bytes.
-            "ex_smallint        SMALLINT NULL",     // Campo tipo Inteiro 2 bytes.
-            "ex_mediumint       MEDIUMINT NULL",    // Campo tipo Inteiro 3 bytes.
-            "ex_int             INT NULL",          // Campo tipo Inteiro 4 bytes.
-            "ex_bigint          BIGINT NULL",       // Campo tipo Inteiro 8 bytes.
-            "ex_float           FLOAT(7,2) NULL",   // Campo tipo Flutuante 4 bytes.
-            "ex_double          DOUBLE(7,2) NULL",  // Campo tipo Flutuante 8 bytes.
-
-            // Informações do registro do tipo data.
-            "ex_date            DATE NULL",         // Campo tipo Data ('0000-00-00').
-            "ex_time            TIME NULL",         // Campo tipo Data ('00:00:00').
-            "ex_datetime        DATETIME NULL",     // Campo tipo Data e Hora ('0000-00-00 00:00:00').
-            "ex_timestamp       TIMESTAMP NULL",    // Campo tipo TimeStamp ('0000-00-00 00:00:00').
-            "ex_year            YEAR NULL",         // Campo tipo Ano (0000).
-
-            // Informações do registro do tipo data.
-            "ex_varchar         VARCHAR(255) NULL", // Campo tipo Texto.
-            "ex_text            TEXT NULL",         // Campo tipo Texto (256 bytes e 2000 parts).
-            "ex_mediumtext      MEDIUMTEXT NULL",   // Campo tipo Texto médio (256 bytes e 4000 parts).
-            "ex_longtext        LONGTEXT NULL",     // Campo tipo Texto longo (256 bytes e 13948 parts).
+            // Informações do registro.
+            "url                VARCHAR(256) NULL",     // Url atual.
+            "attr               VARCHAR(256) NULL",     // Parametros da url atual.
+            "post               VARCHAR(256) NULL",     // POST.
+            "get                VARCHAR(256) NULL",     // GET.
+            "controller         VARCHAR(64) NULL",      // GET.
+            "conn               INT(1) NULL",           // Conexão utilizada.
+            "query              VARCHAR(256) NULL",     // Query executada.
+            "tableName          VARCHAR(256) NULL",     // Tabela principal da Query executada.
+            "queryType          VARCHAR(32) NULL",      // Tipo da query.
+            "type               VARCHAR(32) NULL",      // Tipo da query.
 
             // Observações do registro (obrigatório).
-            "obs                VARCHAR(255) NULL",
+            "obs                VARCHAR(256) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
-            "idLoginCreate      INT NULL",          // Login que realizou a criação.
-            "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
-            "idLoginUpdate      INT NULL",          // Login que realizou a edição.
-            "dtUpdate           DATETIME NULL",     // Data em que registro foi alterado.
+            "idStatus           INT NULL",            // Status pelo grupo ou [1] Ativo, [2] Inativo.
+            "idLoginCreate      INT NULL",            // Login que realizou a criação.
+            "dtCreate           DATETIME NULL",       // Data em que registro foi criado.
+            "idLoginUpdate      INT NULL",            // Login que realizou a edição.
+            "dtUpdate           DATETIME NULL",       // Data em que registro foi alterado.
 
         ];
-        return self::createTable(self::$tableName, $fields, self::$conn);
+        return Self::createTable(Self::$tableName, $fields, Self::$conn);
     }
 
 
@@ -103,7 +93,7 @@ class BdModelo extends \controllers\Bd
     public static function tableDelete()
     {
         // Deleta a tabela.
-        return self::deleteTable(self::$tableName, self::$conn);
+        Self::deleteTable(Self::$tableName, Self::$conn);
     }
 
 
@@ -117,7 +107,7 @@ class BdModelo extends \controllers\Bd
         // Retorno padrão.
         $r = false;
 
-        $r = self::insertsIniciais();
+        // $r = self::insertsIniciais();
 
         return $r;
     }
@@ -134,7 +124,7 @@ class BdModelo extends \controllers\Bd
     public static function adicionar($fields)
     {
         // Retorno da função insert préviamente definida. (true, false)
-        return self::insert(self::$tableName, $fields, self::$conn);
+        return Self::insert(Self::$tableName, $fields, Self::$conn);
     }
 
 
@@ -150,7 +140,7 @@ class BdModelo extends \controllers\Bd
     public static function atualizar($id, $fields)
     {
         // Retorno da função update préviamente definida. (true, false)
-        return self::update(self::$tableName, $id, $fields, self::$conn);
+        return Self::update(Self::$tableName, $id, $fields, Self::$conn);
     }
 
 
@@ -166,7 +156,7 @@ class BdModelo extends \controllers\Bd
     public static function deletar($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return self::delete(self::$tableName, $id, self::$conn);
+        return Self::delete(Self::$tableName, $id, Self::$conn);
     }
 
 
@@ -181,7 +171,7 @@ class BdModelo extends \controllers\Bd
     public static function deletarStatus($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return self::deleteStatus(self::$tableName, $id, self::$conn);
+        return Self::deleteStatus(Self::$tableName, $id, Self::$conn);
     }
 
 
@@ -198,7 +188,7 @@ class BdModelo extends \controllers\Bd
     public static function selecionarTudo($posicao = null, $qtd = 10)
     {
         // Retorno da função selectAll préviamente definida. (true, false)
-        return self::selectAll(self::$tableName, $posicao, $qtd, self::$conn);
+        return Self::selectAll(Self::$tableName, $posicao, $qtd, Self::$conn);
     }
 
 
@@ -214,7 +204,7 @@ class BdModelo extends \controllers\Bd
     public static function selecionarPorId($id)
     {
         // Retorno da função selectById préviamente definida. (array)
-        return self::selectById(self::$tableName, $id, self::$conn);
+        return Self::selectById(Self::$tableName, $id, Self::$conn);
     }
 
 
@@ -227,7 +217,7 @@ class BdModelo extends \controllers\Bd
     public static function quantidade()
     {
         // Retorno da função update préviamente definida. (true, false)
-        return self::count(self::$tableName, self::$conn);
+        return Self::count(Self::$tableName, Self::$conn);
     }
 
 
@@ -242,16 +232,16 @@ class BdModelo extends \controllers\Bd
     public static function queryPersonalizada($id)
     {
         // Ajusta nome real da tabela.
-        $table = self::fullTableName(self::$tableName, self::$conn);
-        // $tableInnerMidia = self::fullTableName('midia', self::$conn);
-        // $tableInnerLogin = self::fullTableName('login', self::$conn);
-        // $tableInnerUsers = self::fullTableName('users', self::$conn);
+        $table = Self::fullTableName(Self::$tableName, Self::$conn);
+        // $tableInnerMidia = Self::fullTableName('midia', Self::$conn);
+        // $tableInnerLogin = Self::fullTableName('login', Self::$conn);
+        // $tableInnerUsers = Self::fullTableName('users', Self::$conn);
 
         // Monta SQL.
         $sql = "SELECT * FROM $table WHERE id = '$id' LIMIT 1;";
 
         // Executa o select
-        $r = self::executeQuery($sql, self::$conn);
+        $r = Self::executeQuery($sql, Self::$conn);
 
         // Verifica se não teve retorno.
         if (!$r)
@@ -329,3 +319,4 @@ class BdModelo extends \controllers\Bd
         return $r;
     }
 }
+

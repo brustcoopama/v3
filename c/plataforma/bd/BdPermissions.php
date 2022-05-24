@@ -1,6 +1,6 @@
 <?php
 
-class BdLogin extends \controllers\Bd
+class BdPermissions extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdLogin extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'login';
+    private static $tableName = 'permissions';
 
 
     /**
@@ -56,43 +56,22 @@ class BdLogin extends \controllers\Bd
         // Monta os campos da tabela.
         $fields = [
             // Identificador Padrão (obrigatório).
-            "id               INT NOT NULL AUTO_INCREMENT primary key",
-
-            // Identificadores.
-            "matricula        INT NULL",
-            "idUser           INT NULL",                // Id do usuário. Tabela com informações detalhadas da entidade.
-            "idOld            INT NULL",                // Id identificador de tabela antiga.
+            "id                 INT NOT NULL AUTO_INCREMENT primary key",
 
             // Chaves externas  
-            "idMenu           INT NULL",                // Menu personalizado.
-
+            "idLogin            INT NULL",          // Id na tabela login.
+            "idGrupo            INT NULL",          // Status grupo: "users/idGrupo"
+      
             // Informações básicas
-            "fullName         VARCHAR(160) NULL",       // Nome Completo.
-            "firstName        VARCHAR(40) NULL",        // Primeiro nome.
-            "lastName         VARCHAR(40) NULL",        // Último nome.
-
-            // Login - Pode ser usado para realizar o login.
-            "userName         VARCHAR(32) NULL",        // User para logar.
-            "email            VARCHAR(160) NULL",       // E-mail principal da coopama.
-            "telefone         VARCHAR(11) NULL",        // Telefone (numero only).
-            "cpf              VARCHAR(11) NULL",        // CPF.
-            "cnpj             VARCHAR(11) NULL",        // CNPJ.
-
-            // Senha
-            "senha            VARCHAR(64) NOT NULL",    // criptografia hash('sha256', $senha).
-            "expirationDays   INT(11) NULL",
-            "strongPass       BOOLEAN NULL",
-            "dateChangePass   DATETIME NULL",
-
-            // Controle
-            "initialUrl       VARCHAR(255) NOT NULL",   // Redireciona para esta URL após logado. (Personalização)
-            "menu             MEDIUMTEXT NOT NULL",     // Menu Personalizado serialize.
+            "nome               VARCHAR(32) NULL",  // Título do registro.
+            "urlPagina          VARCHAR(128) NULL", // A frente do "/".
+            "permissions        INT(9) NULL",       // [000000000] menu, index, post, put, get, getFull, delete, api, test.
 
             // Observações do registro (obrigatório).
             "obs                VARCHAR(255) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",          // Status grupo: "login/idStatus" ou [1] Ativo, [2] Inativo.
+            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
             "idLoginCreate      INT NULL",          // Login que realizou a criação.
             "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
             "idLoginUpdate      INT NULL",          // Login que realizou a edição.
@@ -111,7 +90,7 @@ class BdLogin extends \controllers\Bd
     public static function tableDelete()
     {
         // Deleta a tabela.
-        self::deleteTable(self::$tableName, self::$conn);
+        return self::deleteTable(self::$tableName, self::$conn);
     }
 
 
@@ -240,56 +219,31 @@ class BdLogin extends \controllers\Bd
 
 
     /**
-     * Modelo para criação de uma query personalizada.
-     * É possível fazer inner joins e filtros personalizados.
-     * ATENÇÃO: Não deixar brechas para SQL Injection.
+     * Seleciona permissões pelo id do usuário logado e página.
      *
      * @param PDO $conn
      * @return int
      */
-    public static function verificaLogin($login, $senha)
+    public static function selecionarPorIdGrupoUrl($idLogin, $idGroup, $urlPage)
     {
-        // Obtém dados de conexão.
-        $db = self::getConn(self::$conn);
-        if (!$db['DB']) {
-            return false;
-        }
+        // Ajusta nome real da tabela.
+        $table = self::fullTableName(self::$tableName, self::$conn);
+        // $tableInnerMidia = self::fullTableName('midia', self::$conn);
+        // $tableInnerLogin = self::fullTableName('login', self::$conn);
+        // $tableInnerUsers = self::fullTableName('users', self::$conn);
 
-        // Obtém select padrão.
-        $sql = self::fullSelect();
+        // Monta SQL.
+        $sql = "SELECT * FROM $table WHERE (idLogin = $idLogin OR idGrupo IN ($idGroup)) AND urlPagina = '$urlPage'";
 
-        // Acrescenta where no SQL.
-        $sql .= "
-        WHERE (
-            email = :email OR
-            userName = :userName OR
-            matricula = :matricula
-            ) AND
-            (senha = :senha)
-            AND
-            idStatus != 2
-        LIMIT 1;
-        ";
-
-        $sth = $db['CONN']->prepare($sql);
-
-        $login = \classes\TratamentoDados::limpaInject($login);
-
-        // Substitui os valores. (segurança de sql injection)
-        $sth->bindValue(":email", $login);
-        $sth->bindValue(":userName", $login);
-        $sth->bindValue(":matricula", $login);
-        $sth->bindValue(":senha", $senha);
-
-        // Retorna
-        $r = self::executeSth($sth, $sql, $db, self::$conn);
+        // Executa o select
+        $r = self::executeQuery($sql, self::$conn);
 
         // Verifica se não teve retorno.
         if (!$r)
             return false;
 
-        // Retorna primeira linha.
-        return $r[0];
+        // Retorna registros.
+        return $r;
     }
 
 
@@ -325,53 +279,6 @@ class BdLogin extends \controllers\Bd
 
 
     /**
-     * SQL padrão.
-     * Monta select padrão com todos os campos e junções.
-     *
-     * @return string
-     */
-    private static function fullSelect()
-    {
-        // Ajusta nome real da tabela.
-        $tableName = self::fullTableName(self::$tableName, self::$conn);
-
-        // Monta select padrão com todos os campos e junções.
-        $sql = "
-        SELECT
-            id,
-            matricula,
-            idUser,
-            idOld,
-            idMenu,
-            fullName,
-            firstName,
-            lastName,
-            userName,
-            email,
-            telefone,
-            cpf,
-            cnpj,
-            expirationDays,
-            strongPass,
-            dateChangePass,
-            initialUrl,
-            menu,
-            obs,
-            idStatus,
-            idLoginCreate,
-            dtCreate,
-            idLoginUpdate,
-            dtUpdate
-
-        FROM $tableName 
-
-        ";
-
-        return $sql;
-    }
-
-
-    /**
      * Realização de testes.
      * Apenas para testes.
      *
@@ -391,48 +298,58 @@ class BdLogin extends \controllers\Bd
     }
 
 
+
+
+
+
+
+
+
+
+
+    /**
+     * ********************************************************************************************
+     * FUNÇÕES DE APOIO DA CLASSE
+     * ********************************************************************************************
+     */
+
+
     /**
      * Realização dos inserts iniciais.
      *
      * @return void
      */
-    public static function insertsIniciais()
+    private static function insertsIniciais()
     {
         // Retorno padrão.
         $r = true;
 
-        // Insert modelo.
-        $r = self::adicionar([
-            // Informações do registro.
-            'matricula' => '2142',
-
-            'fullName'  => 'Mateus Rocha Brust',
-            'firstName' => 'Mateus',
-            'lastName'  => 'Brust',
-
-            'userName' => 'brust',
-            'email'    => 'mateus.brust@coopama.com.br',
-            'telefone' => '31993265491',
-            'cpf'      => '10401141640',
-
-            'senha'          => hash('sha256', '123456'),
-            'expirationDays' => '360',
-            'strongPass'     => false,
-            'dateChangePass' => '2023-05-23',
-
-            // Observações do registro (obrigatório).
-            'obs'           => 'Insert Automático.',
-
-            // Controle padrão do registro (obrigatório).
-            'idStatus'      => 1,
-            'idLoginCreate' => 1,
-            'dtCreate'      => date("Y-m-d H:i:s"),
-            'idLoginUpdate' => 1,
-            'dtUpdate'      => date("Y-m-d H:i:s"),
-        ], self::$conn);
-
+        // Acrescenta permissões
+        self::atribuirPermissaoGrupo(5, '00-modelo/modelo-bd/');
+        self::atribuirPermissaoGrupo(5, '00-modelo/modelo-restrito/');
 
         // Finaliza a função.
         return $r;
+    }
+
+    /**
+     * Função que cria permissões para um grupo.
+     *
+     * @param int $id
+     * @param string $urlPage
+     * @return bool
+     */
+    private static function atribuirPermissaoGrupo($idGroup, $urlPage)
+    {
+        // Administradores
+        self::adicionar([ 
+            'idGrupo'   => $idGroup,
+            'nome'      => 'Acesso Total',
+            'urlPagina' => $urlPage,
+            'permissions' => '111111111',
+            'obs'       => 'Cadastro Inicial.',
+        ]);
+
+        return true;
     }
 }

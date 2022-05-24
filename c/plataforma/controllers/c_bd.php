@@ -116,7 +116,7 @@ class Bd
 		$fields = array_merge(self::acrescentaValoresObrigatorios(true), $fields);
 
 		// Realiza a insersão do log gerado.
-		self::insert('log', $fields);
+		self::insert('logs', $fields);
 
 		// Gravou log.
 		return true;
@@ -422,7 +422,7 @@ class Bd
 			$id = $db['CONN']->lastInsertId();
 
 			// Insere um log caso não seja a própria tabela log.
-			if ($tableName != 'log') {
+			if ($tableName != 'logs') {
 
 				// LOG Das ações na plataforma.
 				$obs = 'Classe: ' . get_called_class() . ' Função ' . __FUNCTION__ . '.';

@@ -486,16 +486,36 @@ class ModeloBdControllerPage extends \moduloControllers\Page
 
 
         // todo TESTES de uso de BD
-        // TESTE: Cria tabelas
-        BdLog::tableCreate();
-        BdModelo::tableCreate();
-        BdLogin::tableCreate();
-        BdStatus::tableCreate();
         
         // TESTE: Deleta tabelas.
+        // BdLogs::tableDelete();
         // BdModelo::tableDelete();
-        // BdLog::tableDelete();
-        // BdLogin::tableDelete();
+        // BdStatus::tableDelete();
+        // BdLogins::tableDelete();
+        // BdLoginsGroups::tableDelete();
+        // BdPermissions::tableDelete();
+
+        // TESTE: Cria tabelas
+        BdLogs::tableCreate();
+        BdModelo::tableCreate();
+        BdStatus::tableCreate();
+        BdLogins::tableCreate();
+        BdLoginsGroups::tableCreate();
+        BdPermissions::tableCreate();
+
+        // Inserts
+        // BdLogs::tableInserts();
+        // BdModelo::tableInserts();
+        // BdStatus::tableInserts();
+        // BdLogins::tableInserts();
+        // BdLoginsGroups::tableInserts();
+        // BdPermissions::tableInserts();
+
+
+
+
+
+
 
         // Teste de gravação de log.        [OK]
         // BdLog::gravaLog('Teste', 'teste', 'teste');
@@ -511,8 +531,6 @@ class ModeloBdControllerPage extends \moduloControllers\Page
         //     'ex_tinyint' => 99,
         // ];
         // BdModelo::atualizar(1, $fields);
-
-        BdLogin::insertsIniciais();
 
         // Teste de selecionar tudo.        [OK]
         // print_r(BdModelo::selecionarTudo());

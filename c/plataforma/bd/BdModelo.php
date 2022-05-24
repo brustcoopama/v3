@@ -282,12 +282,28 @@ class BdModelo extends \controllers\Bd
     }
 
 
+
+
+
+
+
+
+
+
+
+    /**
+     * ********************************************************************************************
+     * FUNÇÕES DE APOIO DA CLASSE
+     * ********************************************************************************************
+     */
+
+
     /**
      * Realização dos inserts iniciais.
      *
      * @return void
      */
-    public static function insertsIniciais()
+    private static function insertsIniciais()
     {
         // Retorno padrão.
         $r = true;
@@ -306,7 +322,7 @@ class BdModelo extends \controllers\Bd
 			'dtCreate'      => date("Y-m-d H:i:s"),
 			'idLoginUpdate' => 1,
 			'dtUpdate'      => date("Y-m-d H:i:s"),
-		], self::$conn);
+		]);
 
 
         // Finaliza a função.

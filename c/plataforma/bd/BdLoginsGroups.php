@@ -1,6 +1,6 @@
 <?php
 
-class BdLog extends \controllers\Bd
+class BdLoginsGroups extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdLog extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'log';
+    private static $tableName = 'loginsGroups';
 
 
     /**
@@ -58,30 +58,22 @@ class BdLog extends \controllers\Bd
             // Identificador Padrão (obrigatório).
             "id                 INT NOT NULL AUTO_INCREMENT primary key",
 
-            // Informações do registro.
-            "url                VARCHAR(256) NULL",     // Url atual.
-            "attr               VARCHAR(256) NULL",     // Parametros da url atual.
-            "post               VARCHAR(256) NULL",     // POST.
-            "get                VARCHAR(256) NULL",     // GET.
-            "controller         VARCHAR(64) NULL",      // GET.
-            "conn               INT(1) NULL",           // Conexão utilizada.
-            "query              VARCHAR(256) NULL",     // Query executada.
-            "tableName          VARCHAR(256) NULL",     // Tabela principal da Query executada.
-            "queryType          VARCHAR(32) NULL",      // Tipo da query.
-            "type               VARCHAR(32) NULL",      // Tipo da query.
+            // Informações básicas
+            "idLogin          INT NULL",
+            "idGroup          INT NULL",
 
             // Observações do registro (obrigatório).
-            "obs                VARCHAR(256) NULL",
+            "obs                VARCHAR(255) NULL",
 
             // Controle padrão do registro (obrigatório).
-            "idStatus           INT NULL",            // Status pelo grupo ou [1] Ativo, [2] Inativo.
-            "idLoginCreate      INT NULL",            // Login que realizou a criação.
-            "dtCreate           DATETIME NULL",       // Data em que registro foi criado.
-            "idLoginUpdate      INT NULL",            // Login que realizou a edição.
-            "dtUpdate           DATETIME NULL",       // Data em que registro foi alterado.
+            "idStatus           INT NULL",          // Status grupo: "login/idStatus".
+            "idLoginCreate      INT NULL",          // Login que realizou a criação.
+            "dtCreate           DATETIME NULL",     // Data em que registro foi criado.
+            "idLoginUpdate      INT NULL",          // Login que realizou a edição.
+            "dtUpdate           DATETIME NULL",     // Data em que registro foi alterado.
 
         ];
-        return Self::createTable(Self::$tableName, $fields, Self::$conn);
+        return self::createTable(self::$tableName, $fields, self::$conn);
     }
 
 
@@ -93,7 +85,7 @@ class BdLog extends \controllers\Bd
     public static function tableDelete()
     {
         // Deleta a tabela.
-        Self::deleteTable(Self::$tableName, Self::$conn);
+        return self::deleteTable(self::$tableName, self::$conn);
     }
 
 
@@ -124,7 +116,7 @@ class BdLog extends \controllers\Bd
     public static function adicionar($fields)
     {
         // Retorno da função insert préviamente definida. (true, false)
-        return Self::insert(Self::$tableName, $fields, Self::$conn);
+        return self::insert(self::$tableName, $fields, self::$conn);
     }
 
 
@@ -140,7 +132,7 @@ class BdLog extends \controllers\Bd
     public static function atualizar($id, $fields)
     {
         // Retorno da função update préviamente definida. (true, false)
-        return Self::update(Self::$tableName, $id, $fields, Self::$conn);
+        return self::update(self::$tableName, $id, $fields, self::$conn);
     }
 
 
@@ -156,7 +148,7 @@ class BdLog extends \controllers\Bd
     public static function deletar($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return Self::delete(Self::$tableName, $id, Self::$conn);
+        return self::delete(self::$tableName, $id, self::$conn);
     }
 
 
@@ -171,7 +163,7 @@ class BdLog extends \controllers\Bd
     public static function deletarStatus($id)
     {
         // Retorno da função delete préviamente definida. (true, false)
-        return Self::deleteStatus(Self::$tableName, $id, Self::$conn);
+        return self::deleteStatus(self::$tableName, $id, self::$conn);
     }
 
 
@@ -188,7 +180,7 @@ class BdLog extends \controllers\Bd
     public static function selecionarTudo($posicao = null, $qtd = 10)
     {
         // Retorno da função selectAll préviamente definida. (true, false)
-        return Self::selectAll(Self::$tableName, $posicao, $qtd, Self::$conn);
+        return self::selectAll(self::$tableName, $posicao, $qtd, self::$conn);
     }
 
 
@@ -204,7 +196,7 @@ class BdLog extends \controllers\Bd
     public static function selecionarPorId($id)
     {
         // Retorno da função selectById préviamente definida. (array)
-        return Self::selectById(Self::$tableName, $id, Self::$conn);
+        return self::selectById(self::$tableName, $id, self::$conn);
     }
 
 
@@ -217,7 +209,33 @@ class BdLog extends \controllers\Bd
     public static function quantidade()
     {
         // Retorno da função update préviamente definida. (true, false)
-        return Self::count(Self::$tableName, Self::$conn);
+        return self::count(self::$tableName, self::$conn);
+    }
+
+
+    /**
+     * Seleciona os registros pelo id de login.
+     *
+     * @param int $idLogin
+     * @return int
+     */
+    public static function selecionarPorLogin($idLogin)
+    {
+        // Ajusta nome real da tabela.
+        $table = self::fullTableName(self::$tableName, self::$conn);
+
+        // Monta SQL.
+        $sql = "SELECT * FROM $table WHERE idLogin = $idLogin";
+
+        // Executa o select
+        $r = self::executeQuery($sql, self::$conn);
+
+        // Verifica se não teve retorno.
+        if (!$r)
+            return false;
+
+        // Retorna registros.
+        return $r;
     }
 
 
@@ -232,16 +250,16 @@ class BdLog extends \controllers\Bd
     public static function queryPersonalizada($id)
     {
         // Ajusta nome real da tabela.
-        $table = Self::fullTableName(Self::$tableName, Self::$conn);
-        // $tableInnerMidia = Self::fullTableName('midia', Self::$conn);
-        // $tableInnerLogin = Self::fullTableName('login', Self::$conn);
-        // $tableInnerUsers = Self::fullTableName('users', Self::$conn);
+        $table = self::fullTableName(self::$tableName, self::$conn);
+        // $tableInnerMidia = self::fullTableName('midia', self::$conn);
+        // $tableInnerLogin = self::fullTableName('login', self::$conn);
+        // $tableInnerUsers = self::fullTableName('users', self::$conn);
 
         // Monta SQL.
         $sql = "SELECT * FROM $table WHERE id = '$id' LIMIT 1;";
 
         // Executa o select
-        $r = Self::executeQuery($sql, Self::$conn);
+        $r = self::executeQuery($sql, self::$conn);
 
         // Verifica se não teve retorno.
         if (!$r)
@@ -272,35 +290,66 @@ class BdLog extends \controllers\Bd
     }
 
 
+
+
+
+
+
+
+
+
+
+    /**
+     * ********************************************************************************************
+     * FUNÇÕES DE APOIO DA CLASSE
+     * ********************************************************************************************
+     */
+
+
     /**
      * Realização dos inserts iniciais.
      *
      * @return void
      */
-    public static function insertsIniciais()
+    private static function insertsIniciais()
     {
         // Retorno padrão.
         $r = true;
 
-        // Insert modelo.
-        $r = self::adicionar([
-            // Informações do registro.
-            'campo'         => 'valor',
-
-            // Observações do registro (obrigatório).
-			'obs'           => 'Status ativo Geral',
-
-            // Controle padrão do registro (obrigatório).
-			'idStatus'      => 1,
-			'idLoginCreate' => 1,
-			'dtCreate'      => date("Y-m-d H:i:s"),
-			'idLoginUpdate' => 1,
-			'dtUpdate'      => date("Y-m-d H:i:s"),
-		], self::$conn);
+        // Adiciona grupo ao login.
+        self::loginInGroup(1, 5);
+        self::loginInGroup(1, 6);
+        self::loginInGroup(1, 7);
+        self::loginInGroup(1, 8);
+        self::loginInGroup(1, 9);
+        self::loginInGroup(1, 10);
+        self::loginInGroup(1, 11);
+        self::loginInGroup(1, 12);
+        self::loginInGroup(1, 13);
+        self::loginInGroup(1, 14);
+        self::loginInGroup(1, 15);
+        
 
 
         // Finaliza a função.
         return $r;
     }
-}
 
+    /**
+     * Função que associa login a um grupo.
+     *
+     * @param int $id
+     * @param int $group
+     * @return bool
+     */
+    private static function loginInGroup($id, $group)
+    {
+        // Administradores
+        self::adicionar([ 
+            'idLogin' => $id,
+            'idGroup' => $group,
+        ]);
+
+        return true;
+    }
+}
