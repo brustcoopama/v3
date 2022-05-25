@@ -495,8 +495,8 @@ class LoginControllerPage extends \moduloControllers\Page
         // Verifica se é para sair da sessão.
         if (isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'now') {
             // Monta informações de login.
-            $login = 'admin';
-            $senha = 'admin';
+            $login = 'grupo';
+            $senha = 'grupo';
             // Cria sessão.
             $this->logarOffBD($login, $senha);
         }

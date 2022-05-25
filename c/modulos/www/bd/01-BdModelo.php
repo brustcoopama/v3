@@ -117,7 +117,7 @@ class BdModelo extends \controllers\Bd
         // Retorno padrão.
         $r = false;
 
-        $r = self::insertsIniciais();
+        // $r = self::insertsIniciais();
 
         return $r;
     }

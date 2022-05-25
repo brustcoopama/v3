@@ -1,6 +1,6 @@
 <?php
 
-class BdLoginsGroups extends \controllers\Bd
+class BdModelo extends \controllers\Bd
 {
 
 
@@ -17,7 +17,7 @@ class BdLoginsGroups extends \controllers\Bd
      *
      * @var string
      */
-    private static $tableName = 'loginsGroups';
+    private static $tableName = 'modelo';
 
 
     /**
@@ -58,9 +58,27 @@ class BdLoginsGroups extends \controllers\Bd
             // Identificador Padrão (obrigatório).
             "id                 INT NOT NULL AUTO_INCREMENT primary key",
 
-            // Informações básicas
-            "idLogin          INT NULL",
-            "idGroup          INT NULL",
+            // Informações do registro do tipo numérico.
+            "ex_tinyint         TINYINT NULL",      // Campo tipo Inteiro 1 bytes.
+            "ex_smallint        SMALLINT NULL",     // Campo tipo Inteiro 2 bytes.
+            "ex_mediumint       MEDIUMINT NULL",    // Campo tipo Inteiro 3 bytes.
+            "ex_int             INT NULL",          // Campo tipo Inteiro 4 bytes.
+            "ex_bigint          BIGINT NULL",       // Campo tipo Inteiro 8 bytes.
+            "ex_float           FLOAT(7,2) NULL",   // Campo tipo Flutuante 4 bytes.
+            "ex_double          DOUBLE(7,2) NULL",  // Campo tipo Flutuante 8 bytes.
+
+            // Informações do registro do tipo data.
+            "ex_date            DATE NULL",         // Campo tipo Data ('0000-00-00').
+            "ex_time            TIME NULL",         // Campo tipo Data ('00:00:00').
+            "ex_datetime        DATETIME NULL",     // Campo tipo Data e Hora ('0000-00-00 00:00:00').
+            "ex_timestamp       TIMESTAMP NULL",    // Campo tipo TimeStamp ('0000-00-00 00:00:00').
+            "ex_year            YEAR NULL",         // Campo tipo Ano (0000).
+
+            // Informações do registro do tipo data.
+            "ex_varchar         VARCHAR(255) NULL", // Campo tipo Texto.
+            "ex_text            TEXT NULL",         // Campo tipo Texto (256 bytes e 2000 parts).
+            "ex_mediumtext      MEDIUMTEXT NULL",   // Campo tipo Texto médio (256 bytes e 4000 parts).
+            "ex_longtext        LONGTEXT NULL",     // Campo tipo Texto longo (256 bytes e 13948 parts).
 
             // Observações do registro (obrigatório).
             "obs                VARCHAR(255) NULL",
@@ -214,38 +232,12 @@ class BdLoginsGroups extends \controllers\Bd
 
 
     /**
-     * Seleciona os registros pelo id de login.
-     *
-     * @param int $idLogin
-     * @return array
-     */
-    public static function selecionarPorLogin($idLogin)
-    {
-        // Ajusta nome real da tabela.
-        $table = self::fullTableName(self::$tableName, self::$conn);
-
-        // Monta SQL.
-        $sql = "SELECT * FROM $table WHERE idLogin = $idLogin";
-
-        // Executa o select
-        $r = self::executeQuery($sql, self::$conn);
-
-        // Verifica se não teve retorno.
-        if (!$r)
-            return false;
-
-        // Retorna registros.
-        return $r;
-    }
-
-
-    /**
      * Modelo para criação de uma query personalizada.
      * É possível fazer inner joins e filtros personalizados.
      * ATENÇÃO: Não deixar brechas para SQL Injection.
      *
      * @param PDO $conn
-     * @return array
+     * @return int
      */
     public static function queryPersonalizada($id)
     {
@@ -290,66 +282,34 @@ class BdLoginsGroups extends \controllers\Bd
     }
 
 
-
-
-
-
-
-
-
-
-
-    /**
-     * ********************************************************************************************
-     * FUNÇÕES DE APOIO DA CLASSE
-     * ********************************************************************************************
-     */
-
-
     /**
      * Realização dos inserts iniciais.
      *
      * @return void
      */
-    private static function insertsIniciais()
+    public static function insertsIniciais()
     {
         // Retorno padrão.
         $r = true;
 
-        // Adiciona grupo ao login.
-        self::loginInGroup(1, 5);
-        self::loginInGroup(1, 6);
-        self::loginInGroup(1, 7);
-        self::loginInGroup(1, 8);
-        self::loginInGroup(1, 9);
-        self::loginInGroup(1, 10);
-        self::loginInGroup(1, 11);
-        self::loginInGroup(1, 12);
-        self::loginInGroup(1, 13);
-        self::loginInGroup(1, 14);
-        self::loginInGroup(1, 15);
-        
+        // Insert modelo.
+        $r = self::adicionar([
+            // Informações do registro.
+            'campo'         => 'valor',
+
+            // Observações do registro (obrigatório).
+			'obs'           => 'Status ativo Geral',
+
+            // Controle padrão do registro (obrigatório).
+			'idStatus'      => 1,
+			'idLoginCreate' => 1,
+			'dtCreate'      => date("Y-m-d H:i:s"),
+			'idLoginUpdate' => 1,
+			'dtUpdate'      => date("Y-m-d H:i:s"),
+		], self::$conn);
 
 
         // Finaliza a função.
         return $r;
-    }
-
-    /**
-     * Função que associa login a um grupo.
-     *
-     * @param int $id
-     * @param int $group
-     * @return bool
-     */
-    private static function loginInGroup($id, $group)
-    {
-        // Administradores
-        self::adicionar([ 
-            'idLogin' => $id,
-            'idGroup' => $group,
-        ]);
-
-        return true;
     }
 }

@@ -85,11 +85,11 @@ class Security extends \controllers\Plataforma
     {
         // Padrão.
         $checked = true;
-        
+
         // Caso não exija sessão (usuário logado).
         if (!$this->params['security']['ativo'])
             return true;
-        
+
         // Caso não exija sessão (usuário logado).
         if ($this->params['security']['session'] && !isset($this->params['infoUser']['permission']))
             $checked = false;
@@ -119,61 +119,14 @@ class Security extends \controllers\Plataforma
         if (!$this->params['security']['ativo'] || !$this->params['security']['session'])
             return true;
 
-        $checked = true;
-
         // Verifica se as permissões do menu são compatíveis com as permissões do usuário logado.
         $exige = $this->params['security']['permission'];
         $tem = $this->params['infoUser']['permission'];
 
-        // Verifica se tem as permissões específicas.
-        if ($exige[0] && !$tem[0]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Menu', 'Sem permissão para acessar a função menu');
-            $checked = false;
-        }
-        if ($exige[1] && !$tem[1]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Index', 'Sem permissão para acessar a função index');
-            $checked = false;
-        }
-        if ($exige[2] && !$tem[2]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Post', 'Sem permissão para acessar a função post');
-            $checked = false;
-        }
-        if ($exige[3] && !$tem[3]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Put', 'Sem permissão para acessar a função put');
-            $checked = false;
-        }
-        if ($exige[4] && !$tem[4]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Get', 'Sem permissão para acessar a função get');
-            $checked = false;
-        }
-        if ($exige[5] && !$tem[5]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('GetFull', 'Sem permissão para acessar a função getFull');
-            $checked = false;
-        }
-        if ($exige[6] && !$tem[6]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Delete', 'Sem permissão para acessar a função delete');
-            $checked = false;
-        }
-        if ($exige[7] && !$tem[7]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Api', 'Sem permissão para acessar a função api');
-            $checked = false;
-        }
-        if ($exige[8] && !$tem[8]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Test', 'Sem permissão para acessar a função test');
-            $checked = false;
-        }
-
         // Retorna resultado de segurança.
-        return $checked;
+        $r = $this->verificaNiveisAcesso($exige, $tem);
+
+        return $r;
     }
 
     /**
@@ -196,9 +149,8 @@ class Security extends \controllers\Plataforma
         if (!$this->checkToken())
             $checked = false;
 
-        // Verifica se usuário atual tem acesso a esta página.
-        if ($this->params['infoUser']['permission'][0] != '1') {
-            // Seta permissão
+        // Verifica se usuário tem permissões para a página atual.
+        if (!$this->verificaNiveisAcesso($this->params['security']['permission'], $this->params['infoUser']['permission'], false)) {
             $checked = false;
         }
 
@@ -219,61 +171,12 @@ class Security extends \controllers\Plataforma
         if (!$this->params['security']['ativo'] || !$this->params['security']['session'])
             return true;
 
-        $checked = true;
-
         // Verifica se as permissões do menu são compatíveis com as permissões do usuário logado.
         $exige = $this->params['menus'][$menu]['permission'];
         $tem = $this->params['infoUser']['permission'];
 
-        // Verifica se tem as permissões específicas.
-        if ($exige[0] && !$tem[0]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Menu', 'Sem permissão para acessar a função menu');
-            $checked = false;
-        }
-        if ($exige[1] && !$tem[1]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Index', 'Sem permissão para acessar a função index');
-            $checked = false;
-        }
-        if ($exige[2] && !$tem[2]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Post', 'Sem permissão para acessar a função post');
-            $checked = false;
-        }
-        if ($exige[3] && !$tem[3]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Put', 'Sem permissão para acessar a função put');
-            $checked = false;
-        }
-        if ($exige[4] && !$tem[4]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Get', 'Sem permissão para acessar a função get');
-            $checked = false;
-        }
-        if ($exige[5] && !$tem[5]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('GetFull', 'Sem permissão para acessar a função getFull');
-            $checked = false;
-        }
-        if ($exige[6] && !$tem[6]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Delete', 'Sem permissão para acessar a função delete');
-            $checked = false;
-        }
-        if ($exige[7] && !$tem[7]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Api', 'Sem permissão para acessar a função api');
-            $checked = false;
-        }
-        if ($exige[8] && !$tem[8]) {
-            if ($this->params['security']['feedback'])
-                \classes\FeedBackMessagens::addWarning('Test', 'Sem permissão para acessar a função test');
-            $checked = false;
-        }
-
         // Retorna resultado de segurança.
-        return $checked;
+        return $this->verificaNiveisAcesso($exige, $tem);
     }
 
 
@@ -327,7 +230,7 @@ class Security extends \controllers\Plataforma
                     'name'       => 'Permissão Total',
                     'urlPage'    => $this->params['infoUrl']['url_friendly'],
                     'obs'        => 'Grupo. Off BD.',
-                    'permission' => $infoUser['permission'],
+                    'permissions' => $infoUser['permission'],
                 ];
                 $permissionsGroups[$value] = $tmp;
             }
@@ -373,10 +276,8 @@ class Security extends \controllers\Plataforma
         $infoUser = \BdLogins::verificaLogin($login, $senha);
 
         // Acessa BdLogins
-        // todo ajustar para pegar grupos do BD.
-        $grupos = array(); // \bds\BdPermissions::grupos($infoUser['id']);
+        $grupos = BdLoginsGroups::selecionarPorLogin($infoUser['id']);
 
-        // todo ajustar para pegar permissões de grupo e user do BD.
         // Monta as permissões de grupo padronizadas do usuário off BD.
         $permissionsGroups = array();
 
@@ -384,14 +285,14 @@ class Security extends \controllers\Plataforma
         foreach ($grupos as $key => $value) {
             $tmp = [
                 'id'          => $value['id'],
-                'idEntity'    => $value['idEntity'],
-                'entity'      => $value['entity'],        // [1] Grupo
-                'name'        => $value['name'],
-                'urlPage'     => $value['urlPage'],
-                'obs'         => $value['obs'],
-                'permission'  => $value['permission'],
+                'idEntity'    => $value['idGroup'],
+                'entity'      => $value['idGroup'],   // [1] Grupo
+                'name'        => '',
+                'urlPage'     => '',
+                'obs'         => '',
+                'permissions' => '000000000',
             ];
-            $permissionsGroups[$value['idEntity']] = $tmp;
+            $permissionsGroups[$value['idGroup']] = $tmp;
         }
 
         // Verifica se achou usuário.
@@ -428,7 +329,7 @@ class Security extends \controllers\Plataforma
     public function deslogar($sessionName = null)
     {
         // Verifica se foi passada sessão específica.
-        if($sessionName)
+        if ($sessionName)
             \classes\Session::destroy($sessionName);
         else
             \classes\Session::destroy($this->params['security']['sessionName']);
@@ -497,11 +398,17 @@ class Security extends \controllers\Plataforma
                 // Guarda URL que quer ir (urlTarget) na sessão geral.
                 \classes\Session::setOptions('urlTarget', '/' . $this->params['infoUrl']['url']);
 
-                // Redireciona usuário para login.
-                header("location: " . $url_login);
+                // Se estiver em uma API não manda para login.
+                if (!$this->params['paths']['A_ATIVO']) {
+                    // Redireciona usuário para login.
+                    header("location: " . $url_login);
 
-                // Garante que vai redirecionar.
-                exit;
+                    // Garante que vai redirecionar.
+                    exit;
+                } else {
+                    echo '{ "msg":"Sem permissão."}';
+                    exit;
+                }
             }
         }
     }
@@ -558,27 +465,6 @@ class Security extends \controllers\Plataforma
 
         // Permissão inicial do usuário.
         $permission = (string)$this->params['infoUser']['permission'];
-        
-        // Busca no banco de dados as permissões para a página atual.
-        if ($this->params['config']['bd']) {
-            
-            // Carrega os grupos do usuário logado.
-            $this->params['infoUser']['groups'] = BdLoginsGroups::selecionarPorLogin($this->params['infoUser']['id']);
-
-            $in = '';
-            // Somar permissões de grupos do usuário.
-            foreach ($this->params['infoUser']['groups'] as $key => $value) {
-                // Verifica se tem o grupo na controller.
-                $in .= ',' . $value['idGroup'];
-            }
-            $in[0] = ' ';
-
-            // Pesquisa todas as permissões para página atual e com os grupos do usuário logado.
-            $r = BdPermissions::selecionarPorIdGrupoUrl($this->params['infoUser']['id'], $in, $this->params['infoUrl']['url_friendly']);
-
-            // Acrescenta as permissões do BD.
-            $permission = '111111111'; // todo VERIFICAR AQUI. PEGAR VALORES DE $R E FAZER A SOMA DAS PERMISSÕES.
-        }
 
         // Caso usuário já tenha todas as permissões sai da função.
         if ($this->fullPermissions($permission)) {
@@ -598,7 +484,7 @@ class Security extends \controllers\Plataforma
             return true;
         }
 
-        // Somar permissões de usuários (ids).
+        // Somar permissões de usuários (ids) da controller..
         foreach ($this->params['security']['ids'] as $key => $value) {
             // Verifica se tem o grupo na controller.
             if ($this->params['infoUser']['id'] == $value) {
@@ -614,16 +500,41 @@ class Security extends \controllers\Plataforma
         // Somar permissões de grupos do usuário.
         foreach ($this->params['infoUser']['groups'] as $key => $value) {
             // Verifica se tem o grupo na controller.
-            $permission = $this->somaPermissions($permission, (string)$value['permission']);
+            $permission = $this->somaPermissions($permission, (string)$value['permissions']);
         }
 
-        
-        // todo VERIFICA SE USUÁRIO ATUAL TEM PERMISSÃO PARA PÁGINA ATUAL?
-        // USUÁRIO BD
+        // Caso usuário já tenha todas as permissões sai da função.
+        if ($this->fullPermissions($permission)) {
+            return true;
+        }
 
+        // Busca no banco de dados as permissões para a página atual.
+        if ($this->params['config']['bd'] && !isset($this->params['infoUser']['off'])) {
+
+            // Carrega os grupos do usuário logado.
+            $this->params['infoUser']['groups'] = BdLoginsGroups::selecionarPorLogin($this->params['infoUser']['id']);
+
+            $in = '';
+            // Somar permissões de grupos do usuário.
+            foreach ($this->params['infoUser']['groups'] as $key => $value) {
+                // Verifica se tem o grupo na controller.
+                $in .= ',' . $value['idGroup'];
+            }
+            $in[0] = ' ';
+
+            // Pesquisa todas as permissões para página atual e com os grupos do usuário logado.
+            $r = BdPermissions::selecionarPorIdGrupoUrl($this->params['infoUser']['id'], $in, $this->params['infoUrl']['url_friendly']);
+
+            // Percorre e soma todas as permissões que usuário tem nesta página.
+            foreach ($r as $key => $value) {
+                $permission = $this->somaPermissions($permission, $value['permissions']);
+            }
+        }
 
         // Cria o vetor associativo de permissões para ser usado nos parâmetros.
         $this->createInfoUserPermissions($permission);
+
+        return true;
     }
 
     /**
@@ -709,10 +620,9 @@ class Security extends \controllers\Plataforma
         }
 
         // Verifica se é uma API e se tem token.
-        if($this->params['paths']['A_ATIVO'] && !(isset($_POST['token']) || isset($_GET['token'])))
+        if ($this->params['paths']['A_ATIVO'] && !(isset($_POST['token']) || isset($_GET['token'])))
             return false;
 
-            
         // Caso for Página.
         if (!$this->params['paths']['A_ATIVO']) {
 
@@ -737,7 +647,7 @@ class Security extends \controllers\Plataforma
 
             return false;
         }
-        
+
         // Retorno padrão.
         $check = true;
         $token = null;
@@ -753,37 +663,36 @@ class Security extends \controllers\Plataforma
         }
 
         // Se for página, cria e verifica token.
-        if (!(isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') && !$this->params['paths']['A_ATIVO'])  {
+        if (!(isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') && !$this->params['paths']['A_ATIVO']) {
 
             // Verifica se token de página NÃO está correto.
             if ($token != $this->params['info']['token']) {
-    
+
                 // Mensagem para usuário.
                 \classes\FeedBackMessagens::addDanger('Transações', 'Token inválido. Transações de dados interrompida.');
-    
+
                 $check = false;
             }
         }
 
         // Se for API, cria e verifica token.
-		if ((isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') || $this->params['paths']['A_ATIVO'])  {
+        if ((isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') || $this->params['paths']['A_ATIVO']) {
 
             // Monta os valores para criação do token.
             $url = $this->params['infoUrl']['url_friendly'];
 
-             // Cria o token e joga para view.
-             $this->params['info']['token'] = \classes\TokenPlataforma::createApi($url);
+            // Cria o token e joga para view.
+            $this->params['info']['token'] = \classes\TokenPlataforma::createApi($url);
 
             // Verifica se token de API NÃO está correto.
             if ($token != $this->params['info']['token']) {
-    
+
                 // Mensagem para usuário.
                 \classes\FeedBackMessagens::addDanger('Transações', 'Token inválido. Transações de dados interrompida.');
-    
+
                 $check = false;
             }
-
-		}
+        }
 
         if (!$check) {
             $_GET = [];
@@ -805,7 +714,7 @@ class Security extends \controllers\Plataforma
     {
         if (VC_PATHS['A_ATIVO']) {
             $sessionName = VC_PATHS['A_NAME'];
-        }else{
+        } else {
             $sessionName = VC_PATHS['M_NAME'];
         }
 
@@ -814,5 +723,83 @@ class Security extends \controllers\Plataforma
 
         // Retorna o array com informações do usuário logado.
         return $infoUser;
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * * *******************************************************************************************
+     * FUNÇÕES PRIVADAS DA CLASSE (APOIO)
+     * * *******************************************************************************************
+     * Uso somente dentro dessa controller.
+     */
+
+
+    /**
+     * Verifica níveis de acesso de cada permissão.
+     *
+     * @param array $exige
+     * @param array $tem
+     * @return void
+     */
+    private function verificaNiveisAcesso($exige, $tem, $feedBack = true)
+    {
+        $checked = true;
+
+        // Verifica se tem as permissões específicas.
+        if ($exige[0] && !$tem[0]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Menu', 'Sem permissão para acessar as funções de menu');
+            $checked = false;
+        }
+        if ($exige[1] && !$tem[1]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Index', 'Sem permissão para acessar as funções de index');
+            $checked = false;
+        }
+        if ($exige[2] && !$tem[2]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Post', 'Sem permissão para acessar as funções de post');
+            $checked = false;
+        }
+        if ($exige[3] && !$tem[3]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Put', 'Sem permissão para acessar as funções de put');
+            $checked = false;
+        }
+        if ($exige[4] && !$tem[4]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Get', 'Sem permissão para acessar as funções de get');
+            $checked = false;
+        }
+        if ($exige[5] && !$tem[5]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('GetFull', 'Sem permissão para acessar as funções de getFull');
+            $checked = false;
+        }
+        if ($exige[6] && !$tem[6]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Delete', 'Sem permissão para acessar as funções de delete');
+            $checked = false;
+        }
+        if ($exige[7] && !$tem[7]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Api', 'Sem permissão para acessar as funções de api');
+            $checked = false;
+        }
+        if ($exige[8] && !$tem[8]) {
+            if ($this->params['security']['feedback'] && $feedBack)
+                \classes\FeedBackMessagens::addWarning('Test', 'Sem permissão para acessar as funções de test');
+            $checked = false;
+        }
+
+        return $checked;
     }
 }

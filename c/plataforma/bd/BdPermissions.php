@@ -65,7 +65,7 @@ class BdPermissions extends \controllers\Bd
             // Informações básicas
             "nome               VARCHAR(32) NULL",  // Título do registro.
             "urlPagina          VARCHAR(128) NULL", // A frente do "/".
-            "permissions        INT(9) NULL",       // [000000000] menu, index, post, put, get, getFull, delete, api, test.
+            "permissions        VARCHAR(9) NULL",       // [000000000] menu, index, post, put, get, getFull, delete, api, test.
 
             // Observações do registro (obrigatório).
             "obs                VARCHAR(255) NULL",
@@ -222,15 +222,12 @@ class BdPermissions extends \controllers\Bd
      * Seleciona permissões pelo id do usuário logado e página.
      *
      * @param PDO $conn
-     * @return int
+     * @return array
      */
     public static function selecionarPorIdGrupoUrl($idLogin, $idGroup, $urlPage)
     {
         // Ajusta nome real da tabela.
         $table = self::fullTableName(self::$tableName, self::$conn);
-        // $tableInnerMidia = self::fullTableName('midia', self::$conn);
-        // $tableInnerLogin = self::fullTableName('login', self::$conn);
-        // $tableInnerUsers = self::fullTableName('users', self::$conn);
 
         // Monta SQL.
         $sql = "SELECT * FROM $table WHERE (idLogin = $idLogin OR idGrupo IN ($idGroup)) AND urlPagina = '$urlPage'";
@@ -240,7 +237,7 @@ class BdPermissions extends \controllers\Bd
 
         // Verifica se não teve retorno.
         if (!$r)
-            return false;
+            return array();
 
         // Retorna registros.
         return $r;
@@ -253,7 +250,7 @@ class BdPermissions extends \controllers\Bd
      * ATENÇÃO: Não deixar brechas para SQL Injection.
      *
      * @param PDO $conn
-     * @return int
+     * @return array
      */
     public static function queryPersonalizada($id)
     {
@@ -324,9 +321,15 @@ class BdPermissions extends \controllers\Bd
         // Retorno padrão.
         $r = true;
 
-        // Acrescenta permissões
-        self::atribuirPermissaoGrupo(5, '00-modelo/modelo-bd/');
-        self::atribuirPermissaoGrupo(5, '00-modelo/modelo-restrito/');
+        // Acrescenta permissões iniciais de grupo.
+        self::addPermissionsGroup(5, '00-modelo/modelo-bd/');
+        self::addPermissionsGroup(5, '00-modelo/modelo-restrito/');
+        self::addPermissionsGroup(5, 'api/00-modelo/');
+
+        // Acrescenta permissões iniciais de login.
+        self::addPermissionsLogin(1, '00-modelo/modelo-bd/');
+        self::addPermissionsLogin(1, '00-modelo/modelo-restrito/');
+
 
         // Finaliza a função.
         return $r;
@@ -339,14 +342,35 @@ class BdPermissions extends \controllers\Bd
      * @param string $urlPage
      * @return bool
      */
-    private static function atribuirPermissaoGrupo($idGroup, $urlPage)
+    private static function addPermissionsGroup($idGroup, $urlPage, $permissions = '111111111')
     {
         // Administradores
         self::adicionar([ 
             'idGrupo'   => $idGroup,
             'nome'      => 'Acesso Total',
             'urlPagina' => $urlPage,
-            'permissions' => '111111111',
+            'permissions' => (string)$permissions,
+            'obs'       => 'Cadastro Inicial.',
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Função que cria permissões para um grupo.
+     *
+     * @param int $id
+     * @param string $urlPage
+     * @return bool
+     */
+    private static function addPermissionsLogin($idLogin, $urlPage, $permissions = '111111111')
+    {
+        // Administradores
+        self::adicionar([ 
+            'idLogin'   => $idLogin,
+            'nome'      => 'Acesso Total',
+            'urlPagina' => $urlPage,
+            'permissions' => $permissions,
             'obs'       => 'Cadastro Inicial.',
         ]);
 

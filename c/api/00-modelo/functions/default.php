@@ -11,8 +11,6 @@
  */
 class DefaultControllerApi extends apiControllers\Api
 {
-
-
     /**
      * ********************************************************************************************
      * PARÂMETROS DA CLASSE
@@ -70,13 +68,13 @@ class DefaultControllerApi extends apiControllers\Api
 
             // Parâmetros da controller vem do BD.
             'virtualPage'       => false,
-            
+
             // Conteúdo da página vem do BD.
             'viewBD'            => false,
 
             // Ativa uso de cache para resultado.
             'cache'             => false,
-            
+
             // Tempo para renovar cache em segundos.
             'cacheTime'         => 300,
 
@@ -111,13 +109,12 @@ class DefaultControllerApi extends apiControllers\Api
 
             // Caminho para página de login.
             'loginPage'         => $this->params['paths']['M_NAME'] . '/login/',
-            'loginPage'         => '00-modelo/login/',
 
             // Caminho para página restrita.
-            'restrictPage'      => '/' . $this->params['paths']['M_NAME'] . '/admin/',
+            'restrictPage'      => $this->params['paths']['M_NAME'] . '/admin/',
 
             // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
-            'permission'        => '100000000',
+            'permission'        => '111111111',
 
             // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
             'token'             => true, // Só aceitar com token.
@@ -166,6 +163,7 @@ class DefaultControllerApi extends apiControllers\Api
             'dataAtual'    => date('d/m/Y H:i:s'),
             'anoAtual'     => date('Y'),
             'logo'         => 'logo.png',
+
         ];
 
         /**
@@ -180,6 +178,9 @@ class DefaultControllerApi extends apiControllers\Api
 
             // Tipo de codificação do cabeçalho http.
             'charset'        => 'utf-8',
+
+            // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
+            'token'             => false,
         ];
 
         /**
@@ -240,9 +241,6 @@ class DefaultControllerApi extends apiControllers\Api
         ];
 
 
-
-
-
         /**
          * * *******************************************************************************************
          * PARÂMETROS HERDADOS
@@ -285,9 +283,6 @@ class DefaultControllerApi extends apiControllers\Api
         // Retorna os parâmetros da controller para fazer a intersecção com os valores default.
         return $params;
     }
-
-
-
 
 
 

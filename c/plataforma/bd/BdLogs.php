@@ -227,7 +227,7 @@ class BdLogs extends \controllers\Bd
      * ATENÇÃO: Não deixar brechas para SQL Injection.
      *
      * @param PDO $conn
-     * @return int
+     * @return array
      */
     public static function queryPersonalizada($id)
     {

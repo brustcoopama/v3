@@ -679,6 +679,7 @@ define("VC_INFO", [
  */
 $userinfo[0] = [
 	'id'         => '1',           // Identificador único.
+	'off'		 => true,		   // Identifica se é um login offline.
 	'nome'       => 'Admin',       // Nome para ser exibido.
 	'login'      => 'admin',       // Identificação de usuário (user, matricula, email, id).
 	'senha'      => 'admin',       // Senha usada para logar. Depois é retirada da sessão.
@@ -688,6 +689,7 @@ $userinfo[0] = [
 
 $userinfo[1] = [
 	'id'         => '2',           // Identificador único.
+	'off'		 => true,		   // Identifica se é um login offline.
 	'nome'       => 'Grupo',       // Nome para ser exibido.
 	'login'      => 'grupo',       // Identificação de usuário (user, matricula, email, id).
 	'senha'      => 'grupo',       // Senha usada para logar. Depois é retirada da sessão.
@@ -697,6 +699,7 @@ $userinfo[1] = [
 
 $userinfo[2] = [
 	'id'         => '3',           // Identificador único.
+	'off'		 => true,		   // Identifica se é um login offline.
 	'nome'       => 'Publico',     // Nome para ser exibido.
 	'login'      => 'publico',     // Identificação de usuário (user, matricula, email, id)
 	'senha'      => 'publico',     // Senha usada para logar. Depois é retirada da sessão.

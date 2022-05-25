@@ -136,7 +136,7 @@ class ModeloBdControllerPage extends \moduloControllers\Page
 
             // IDs que tem permissão TOTAL a esta controller. Usar apenas para teste.
             'ids'               => [
-                // 1, // Login ID: 1.
+                1, // Login ID: 1.
             ],
         ];
 
@@ -493,14 +493,14 @@ class ModeloBdControllerPage extends \moduloControllers\Page
         // BdStatus::tableDelete();
         // BdLogins::tableDelete();
         // BdLoginsGroups::tableDelete();
-        // BdPermissions::tableDelete();
+        BdPermissions::tableDelete();
 
         // TESTE: Cria tabelas
-        BdLogs::tableCreate();
-        BdModelo::tableCreate();
-        BdStatus::tableCreate();
-        BdLogins::tableCreate();
-        BdLoginsGroups::tableCreate();
+        // BdLogs::tableCreate();
+        // BdModelo::tableCreate();
+        // BdStatus::tableCreate();
+        // BdLogins::tableCreate();
+        // BdLoginsGroups::tableCreate();
         BdPermissions::tableCreate();
 
         // Inserts
@@ -509,7 +509,7 @@ class ModeloBdControllerPage extends \moduloControllers\Page
         // BdStatus::tableInserts();
         // BdLogins::tableInserts();
         // BdLoginsGroups::tableInserts();
-        // BdPermissions::tableInserts();
+        BdPermissions::tableInserts();
 
 
 

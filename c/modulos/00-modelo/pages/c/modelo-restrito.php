@@ -115,7 +115,7 @@ class ModeloRestritoControllerPage extends \moduloControllers\Page
             // Caminho para página restrita.
             'restrictPage'      => $this->params['paths']['M_NAME'] . '/admin/',
 
-            // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
+            // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes. 1 exige.
             'permission'        => '111111111',
 
             // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').

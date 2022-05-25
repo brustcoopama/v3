@@ -11,8 +11,6 @@
  */
 class IndexControllerApi extends apiControllers\Api
 {
-
-
     /**
      * ********************************************************************************************
      * PARÂMETROS DA CLASSE
@@ -70,13 +68,13 @@ class IndexControllerApi extends apiControllers\Api
 
             // Parâmetros da controller vem do BD.
             'virtualPage'       => false,
-            
+
             // Conteúdo da página vem do BD.
             'viewBD'            => false,
 
             // Ativa uso de cache para resultado.
             'cache'             => false,
-            
+
             // Tempo para renovar cache em segundos.
             'cacheTime'         => 300,
 
@@ -101,10 +99,10 @@ class IndexControllerApi extends apiControllers\Api
             'ativo'             => true,
 
             // Usuário só acessa a controller logado.
-            'session'           => false,
+            'session'           => true,
 
             // Nome da sessão deste projeto.
-            'sessionName'       => $this->params['paths']['M_NAME'],
+            'sessionName'       => $this->params['paths']['A_NAME'],
 
             // Tempo para sessão acabar.
             'sessionTimeOut'    => (60 * 30),
@@ -113,7 +111,7 @@ class IndexControllerApi extends apiControllers\Api
             'loginPage'         => $this->params['paths']['M_NAME'] . '/login/',
 
             // Caminho para página restrita.
-            'restrictPage'      => '/' . $this->params['paths']['M_NAME'] . '/admin/',
+            'restrictPage'      => $this->params['paths']['M_NAME'] . '/admin/',
 
             // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
             'permission'        => '111111111',
@@ -165,6 +163,7 @@ class IndexControllerApi extends apiControllers\Api
             'dataAtual'    => date('d/m/Y H:i:s'),
             'anoAtual'     => date('Y'),
             'logo'         => 'logo.png',
+
         ];
 
         /**
@@ -179,6 +178,9 @@ class IndexControllerApi extends apiControllers\Api
 
             // Tipo de codificação do cabeçalho http.
             'charset'        => 'utf-8',
+
+            // Transações de dados (GET - POST) apenas com token. Usar classe Tokens. Exemplo: (<input name="token" type="text" value="{{token}}" hidden>').
+            'token'             => false,
         ];
 
         /**
@@ -239,9 +241,6 @@ class IndexControllerApi extends apiControllers\Api
         ];
 
 
-
-
-
         /**
          * * *******************************************************************************************
          * PARÂMETROS HERDADOS
@@ -284,9 +283,6 @@ class IndexControllerApi extends apiControllers\Api
         // Retorna os parâmetros da controller para fazer a intersecção com os valores default.
         return $params;
     }
-
-
-
 
 
 

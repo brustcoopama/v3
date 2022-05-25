@@ -136,7 +136,7 @@ class ModeloBdControllerPage extends \moduloControllers\Page
 
             // IDs que tem permissão TOTAL a esta controller. Usar apenas para teste.
             'ids'               => [
-                // 1, // Login ID: 1.
+                1, // Login ID: 1.
             ],
         ];
 
@@ -483,14 +483,39 @@ class ModeloBdControllerPage extends \moduloControllers\Page
         // Exibe na tela todos os parâmetros que podem ser usados no Twig.
         $this->params['info']['html'] .= \controllers\Render::objPlatforma('show_params', $this->params);
 
+
+
         // todo TESTES de uso de BD
-        // TESTE: Cria tabelas
-        // BdLog::tableCreate();
-        BdModelo::tableCreate();
         
         // TESTE: Deleta tabelas.
+        // BdLogs::tableDelete();
         // BdModelo::tableDelete();
-        // BdLog::tableDelete();
+        // BdStatus::tableDelete();
+        // BdLogins::tableDelete();
+        // BdLoginsGroups::tableDelete();
+        BdPermissions::tableDelete();
+
+        // TESTE: Cria tabelas
+        // BdLogs::tableCreate();
+        // BdModelo::tableCreate();
+        // BdStatus::tableCreate();
+        // BdLogins::tableCreate();
+        // BdLoginsGroups::tableCreate();
+        BdPermissions::tableCreate();
+
+        // Inserts
+        // BdLogs::tableInserts();
+        // BdModelo::tableInserts();
+        // BdStatus::tableInserts();
+        // BdLogins::tableInserts();
+        // BdLoginsGroups::tableInserts();
+        BdPermissions::tableInserts();
+
+
+
+
+
+
 
         // Teste de gravação de log.        [OK]
         // BdLog::gravaLog('Teste', 'teste', 'teste');

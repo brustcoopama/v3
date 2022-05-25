@@ -305,6 +305,7 @@ class Core
 
 			// Informações da URL.
 			'url'             		=> '',				// String da url.
+			'url_friendly' 			=> 'api/' . VC_PATHS['A_NAME'] . '/',
 			'url_array'       		=> array(),			// Array da url pela "/".
 			'attr'            		=> array(),			// Atributos/Parâmetros REST passados após a página.	
 		];
@@ -360,7 +361,7 @@ class Core
 						$infoUrl['file']                  = 'index';
 						$infoUrl['controller_class_name'] = Core::nomeControllerApi('index');;
 						$infoUrl['controller_path']       = VC_PATHS['A_PATH_FUNCTIONS'] . $path_atual . 'index.php';
-						$infoUrl['url_friendly'] = VC_PATHS['M_NAME'] . '/' . $path_atual;
+						$infoUrl['url_friendly'] = 'api/' . VC_PATHS['A_NAME'] . '/' . $path_atual;
 						$infoUrl['controller_file']       = 'index.php';
 					}
 
@@ -370,7 +371,7 @@ class Core
 						$infoUrl['file']                  = $value;
 						$infoUrl['controller_class_name'] = $controller_class_name;
 						$infoUrl['controller_path']       = VC_PATHS['A_PATH_FUNCTIONS'] . $path_tmp . '.php';
-						$infoUrl['url_friendly'] = VC_PATHS['M_NAME'] . '/' . $path_atual;
+						$infoUrl['url_friendly'] = 'api/' . VC_PATHS['A_NAME'] . '/' . $path_atual;
 						$infoUrl['controller_file']       = $value . '.php';
 					}
 
