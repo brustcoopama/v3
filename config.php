@@ -619,6 +619,7 @@ define("VC_INFO", [
 	'dataAtual'       => date('d/m/Y H:i:s'),
 	'anoAtual'        => date('Y'),
 	'logo'            => 'logo.png',
+	'logo'            => 'logo.png',
 
 
 	// MENSAGENS PARA USUÁRIO
@@ -642,19 +643,25 @@ define("VC_INFO", [
 	// INFORMAÇÕES DE SEO
 	// *********************
 	// Informações que vão ser usadas para SEO na página.
-	'title'            => '',              // Título da página exibido na aba/janela navegador.
-	'author'           => '',              // Autor do desenvolvimento da página ou responsável.
-	'description'      => '',              // Resumo do conteúdo do site em até 90 carecteres.
-	'keywords'         => '',              // palavras minúsculas separadas por "," em até 150 caracteres.
-	'content-language' => 'pt-BR',         // Linguagem primária da página (pt-br).
-	'content-type'     => 'text/html',     // Tipo de codificação da página.
-	'reply-to'         => '',              // E-mail do responsável da página.
-	'generator'        => 'vscode',        // Programa usado para gerar página.
-	'refresh'          => false,           // Tempo para recarregar a página.
-	'redirect'         => false,           // URL para redirecionar usuário após refresh.
-	'favicon'          => 'favicon.ico',   // Imagem do favicon na página.
-	'icon'             => 'favicon.ico',   // Imagem ícone da empresa na página.
-	'appletouchicon'   => 'favicon.ico',   // Imagem da logo na página.
+	'title'            => 'ND',                         // Título da página exibido na aba/janela navegador.
+	'author'           => 'Mateus Brust',             // Autor do desenvolvimento da página ou responsável.
+	'description'      => '',                         // Resumo do conteúdo do site em até 90 carecteres.
+	'keywords'         => '',                         // palavras minúsculas separadas por "," em até 150 caracteres.
+	'content_language' => 'pt-BR',                    // Linguagem primária da página (pt-br).
+	'content_type'     => 'text/html',                // Tipo de codificação da página.
+	'reply_to'         => 'contato@coopama.com.br',   // E-mail do responsável da página.
+	'charset'          => 'utf-8',                    // Charset da página.
+	'image'            => 'logo.png',				  // Imagem redes sociais.
+	'url'              => 'coopama',				  // Url para instagram.
+	'site'             => 'coopama',				  // Site para twitter.
+	'creator'          => 'coopama',				  // Perfil criador twitter.
+	'author_article'   => 'coopama',				  // Autor do artigo da página atual.
+	'generator'        => 'vscode',                   // Programa usado para gerar página.
+	'refresh'          => false,                      // Tempo para recarregar a página.
+	'redirect'         => false,                      // URL para redirecionar usuário após refresh.
+	'favicon'          => 'favicon.ico',              // Imagem do favicon na página.
+	'icon'             => 'favicon.ico',              // Imagem ícone da empresa na página.
+	'appletouchicon'   => 'favicon.ico',              // Imagem da logo na página.
 ]);
 
 
