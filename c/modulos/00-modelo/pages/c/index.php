@@ -98,10 +98,10 @@ class IndexControllerPage extends \moduloControllers\Page
         $params['security'] = [
 
             // Controller usará controller de segurança.
-            'ativo'             => false,
+            'ativo'             => true,
 
             // Usuário só acessa a controller logado.
-            'session'           => true,
+            'session'           => false,
 
             // Nome da sessão deste projeto.
             'sessionName'       => $this->params['paths']['M_NAME'],

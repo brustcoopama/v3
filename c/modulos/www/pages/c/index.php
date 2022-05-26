@@ -98,10 +98,10 @@ class IndexControllerPage extends \moduloControllers\Page
         $params['security'] = [
 
             // Controller usará controller de segurança.
-            'ativo'             => false,
+            'ativo'             => true,
 
             // Usuário só acessa a controller logado.
-            'session'           => true,
+            'session'           => false,
 
             // Nome da sessão deste projeto.
             'sessionName'       => $this->params['paths']['M_NAME'],
@@ -484,6 +484,8 @@ class IndexControllerPage extends \moduloControllers\Page
         // Link para sair do login
         $this->params['info']['html'] .= '<br><a href="http://v3.local/00-modelo/login/sair">Deslogar</a><br>';
 
+        // Test device info.
+        $this->params['info']['html'] .= '<br>'. \classes\Detect::language() .'<br>';
 
         // Exibe na tela todos os parâmetros que podem ser usados no Twig.
         $this->params['info']['html'] .= \controllers\Render::objPlatforma('show_params', $this->params);

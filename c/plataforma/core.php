@@ -52,7 +52,6 @@ class Core
 	 */
 	public function start()
 	{
-
 		/**
 		 * Carrega as dependências iniciais do aplicativo (COMPOSER).
 		 */

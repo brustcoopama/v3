@@ -42,6 +42,9 @@ class Page extends \controllers\Api
 	 */
 	public function start()
 	{
+		// Salva visita no banco de dados.
+		$this->gravaVisita();
+
 		// Executa a API, caso seja API. (Controller API)
 		$this->executeApi();
 
@@ -66,9 +69,6 @@ class Page extends \controllers\Api
 		if (!empty($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api' || $this->params['paths']['A_ATIVO']) {
 			return false;
 		}
-
-		// Salva visita no banco de dados.
-		$this->gravaVisita();
 
 		// Verifica a segurança da página.
 		$seguroPage = $this->segurancaPage();

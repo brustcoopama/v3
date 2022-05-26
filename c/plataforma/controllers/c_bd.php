@@ -106,31 +106,6 @@ class Bd
 		];
 
 		return self::insertLog($options);
-
-		// Acrescenta valores padrão.
-		$fields = [
-
-			'url'           => VC_INFOURL['url_friendly'],        // Url atual.
-			'attr'          => json_encode(VC_INFOURL['attr']),   // Parametros da url atual.
-			'post'          => json_encode($_POST),               // POST.
-			'get'           => json_encode($_GET),                // GET.
-			'controller'    => VC_INFOURL['controller_path'],     // GET.
-			'conn'          => $conn,                             // Conexão utilizada.
-			'query'         => $sql,                              // Query executada.
-			'tableName'     => $tableName,                        // Tabela principal da Query executada.
-			'queryType'     => $queryType,                        // Tipo da query.
-			'type'          => $type,                             // Tipo da query.
-			'obs'           => $obs,                              // Observação aberta.
-		];
-
-		// Acrescenta valores default caso não exista.
-		$fields = array_merge(self::acrescentaValoresObrigatorios(true), $fields);
-
-		// Realiza a insersão do log gerado.
-		self::insert('logs', $fields);
-
-		// Gravou log.
-		return true;
 	}
 
 	/**

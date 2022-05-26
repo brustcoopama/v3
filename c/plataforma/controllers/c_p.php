@@ -137,6 +137,13 @@ class Plataforma
         $this->params['menus'] = VC_MENUS;
         
         /**
+         * TOKENS
+         * * *******************
+         * Tokens para acesso a APIS e outros.
+         */
+        $this->params['tokens'] = VC_TOKENS;
+        
+        /**
          * SEO
          * * *******************
          * SEO da página.

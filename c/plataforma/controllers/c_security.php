@@ -138,9 +138,6 @@ class Security extends \controllers\Plataforma
      */
     public function segurancaPage()
     {
-        // Caso não exija sessão (usuário logado).
-        if (!$this->params['security']['ativo'] || !$this->params['security']['session'])
-            return true;
 
         // Padrão é não ter permissão.
         $checked = true;
@@ -148,6 +145,10 @@ class Security extends \controllers\Plataforma
         // Verifica se não tem token.
         if (!$this->checkToken())
             $checked = false;
+
+        // Caso não exija sessão (usuário logado).
+        if (!$this->params['security']['ativo'] || !$this->params['security']['session'])
+            return true;
 
         // Verifica se usuário tem permissões para a página atual.
         if (!$this->verificaNiveisAcesso($this->params['security']['permission'], $this->params['infoUser']['permission'], false)) {
@@ -623,16 +624,27 @@ class Security extends \controllers\Plataforma
         if ($this->params['paths']['A_ATIVO'] && !(isset($_POST['token']) || isset($_GET['token'])))
             return false;
 
-        // Caso for Página.
-        if (!$this->params['paths']['A_ATIVO']) {
 
-            // Monta os valores para criação do token.
-            $url = $this->params['infoUrl']['url_friendly'];
-            $func = $this->checkMenu();
 
-            // Cria o token e joga para view.
-            $this->params['info']['token'] = \classes\TokenPlataforma::createPage($url, $func);
-        }
+
+        // CRIA OS TOKENS DE PÁGINA E API
+        // ************************************************
+
+        // PAGE
+        // Monta os valores para criação do token.
+        $url = $this->params['infoUrl']['url_friendly'];
+        $func = $this->checkMenu();
+        // Cria o token e joga para view.
+        $this->params['tokens']['pageFunc'] = \classes\TokenPlataforma::createPage($url, $func);
+        
+        // API
+        // Monta os valores para criação do token de API.
+        $url = $this->params['infoUrl']['url_friendly'];
+        // Cria o token e joga para view.
+        $this->params['tokens']['pageApi'] = \classes\TokenPlataforma::createApi($url);
+
+
+
 
         // Verifica se NÃO tem dados de transações e sai.
         if (empty($_POST) && sizeof($_GET) == 1) {
@@ -666,7 +678,7 @@ class Security extends \controllers\Plataforma
         if (!(isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') && !$this->params['paths']['A_ATIVO']) {
 
             // Verifica se token de página NÃO está correto.
-            if ($token != $this->params['info']['token']) {
+            if ($token != $this->params['tokens']['pageFunc']) {
 
                 // Mensagem para usuário.
                 \classes\FeedBackMessagens::addDanger('Transações', 'Token inválido. Transações de dados interrompida.');
@@ -678,14 +690,8 @@ class Security extends \controllers\Plataforma
         // Se for API, cria e verifica token.
         if ((isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'api') || $this->params['paths']['A_ATIVO']) {
 
-            // Monta os valores para criação do token.
-            $url = $this->params['infoUrl']['url_friendly'];
-
-            // Cria o token e joga para view.
-            $this->params['info']['token'] = \classes\TokenPlataforma::createApi($url);
-
             // Verifica se token de API NÃO está correto.
-            if ($token != $this->params['info']['token']) {
+            if ($token != $this->params['tokens']['pageApi']) {
 
                 // Mensagem para usuário.
                 \classes\FeedBackMessagens::addDanger('Transações', 'Token inválido. Transações de dados interrompida.');

@@ -4,6 +4,7 @@
 
 <title>{{info.title}}</title>
 
+{# Metas #}
 <meta charset="{{info.charset}}" />
 <meta name="language" content="{{info.content_language}}" />
 <meta name="description" content="{{info.description}}" />
@@ -26,31 +27,25 @@
 <meta name="twitter:creator" content="@{{info.creator}}" />
 <meta name="twitter:description" content="{{info.description}}" />
 
-<!-- Tag Manager -->
-<script>
-    // (function (w, d, s, l, i) {
-    //     w[l] = w[l] || [];
-    //     w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-    //     var f = d.getElementsByTagName(s)[0],
-    //         j = d.createElement(s),
-    //         dl = l != "dataLayer" ? "&l=" + l : "";
-    //     j.async = true;
-    //     j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-    //     f.parentNode.insertBefore(j, f);
-    // })(window, document, "script", "dataLayer", "TROCAR_MANAGER");
-</script>
 
-<!-- Analytics -->
-{# <script async src="https://www.googletagmanager.com/gtag/js?id=TROCAR_ANALYTICS"></script> #}
-<script>
-    // window.dataLayer = window.dataLayer || [];
-    // function gtag() {
-    //     dataLayer.push(arguments);
-    // }
-    // gtag("js", new Date());
 
-    // gtag("config", "TROCAR_ANALYTICS");
-</script>
+{# CÓDIGOS JAVASCRIPTS #}
+
+
+
+{# ESTILOS CSS #}
+
+{# Bootstrap #}
+<link href="/{{paths.P_PATH_LIBS}}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+{# SweetAlert #}
+<link href="/{{paths.P_PATH_LIBS}}sweetalert2/sweetalert2.min.css" rel="stylesheet">
+{# FontAwesome #}
+<link href="/{{paths.P_PATH_LIBS}}fontawesome/css/all.min.css" rel="stylesheet">
+{# DataTable #}
+<link href="/{{paths.P_PATH_LIBS}}datatables/datatables.min.css" rel="stylesheet">
+{# Personalizado #}
+<link href="/{{paths.P_PATH_CSS}}default-min.css" rel="stylesheet">
+
 
 <style>
     .default,

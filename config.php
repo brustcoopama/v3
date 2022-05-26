@@ -244,16 +244,16 @@ switch (VC_AMBIENTE) {
 		// Connections
 		// *********************
 		$conexao[1] = [
-			'ATIVO'        => true,               // Conexão será usada?
-			'API'          => false,              // Conexão será via API?
-			'DBMANAGER'    => "mysql",            // Linguagem do Gerenciador de banco de dados (GBD).
+			'ATIVO'        => true,          // Conexão será usada?
+			'API'          => false,         // Conexão será via API?
+			'DBMANAGER'    => "mysql",       // Linguagem do Gerenciador de banco de dados (GBD).
 			'HOST'         => "localhost",   // HOST do servidor de banco de dados. IP ou DNS.
-			'PORT'         => "3306",             // Porta do serviço de BD.
-			'USER'         => "root",          // Usuário do GBD.
-			'PASSWORD'     => "",                 // Senha do usuário do GBD.
-			'DBNAME'       => "v3_local",   // Nome da base de dados no GBD.
-			'CHARSET'      => "utf8",             // Charset usado na base de Dados.
-			'PREFIX_TABLE' => "v3_",              // Prefixo das tabelas.
+			'PORT'         => "3306",        // Porta do serviço de BD.
+			'USER'         => "root",        // Usuário do GBD.
+			'PASSWORD'     => "",            // Senha do usuário do GBD.
+			'DBNAME'       => "v3_local",    // Nome da base de dados no GBD.
+			'CHARSET'      => "utf8",        // Charset usado na base de Dados.
+			'PREFIX_TABLE' => "v3_",         // Prefixo das tabelas.
 		];
 
 
@@ -882,12 +882,15 @@ date_default_timezone_set('America/Sao_Paulo');
  * * *******************
  * Personalização da estrutura da página HTML.
  */
-define("VC_TOKEN", [
+define("VC_TOKENS", [
 
 	// Token geral de alteração diária.
 	'geralDiario' => hash("sha256", 'vctoken' . date('dmy') . '@2019'),
 
 	// Token geral fixo.
 	'geralFixo' => hash("sha256", 'vctoken@2019'),
+	
+	// API Token registro de ações.
+	'apiRegistro' => hash("sha256", 'vcregistro' . date('dmy') . '@2019'),
 
 ]);
