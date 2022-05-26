@@ -65,13 +65,13 @@ class BdLogs extends \controllers\Bd
             "get                VARCHAR(256) NULL",     // GET.
             "controller         VARCHAR(64) NULL",      // GET.
             "conn               INT(1) NULL",           // Conexão utilizada.
-            "query              VARCHAR(256) NULL",     // Query executada.
-            "tableName          VARCHAR(256) NULL",     // Tabela principal da Query executada.
-            "queryType          VARCHAR(32) NULL",      // Tipo da query.
+            "query              VARCHAR(256) NULL COMMENT 'SQL completo, ou Dispositivo'",      // Query executada. [LOG VISITA].
+            "tableName          VARCHAR(256) NULL COMMENT 'Tabela, ou Linguagem'",              // Tabela principal da Query executada. [LOG VISITA].
+            "queryType          VARCHAR(32) NULL COMMENT 'Query, ou Sistema operacional'",      // Tipo da query. [LOG VISITA].
             "type               VARCHAR(32) NULL",      // Tipo da query.
 
             // Observações do registro (obrigatório).
-            "obs                VARCHAR(256) NULL",
+            "obs                VARCHAR(256) NULL COMMENT 'OBS, ou Navegador'",  // Observações. [LOG VISITA].
 
             // Controle padrão do registro (obrigatório).
             "idStatus           INT NULL",            // Status pelo grupo ou [1] Ativo, [2] Inativo.

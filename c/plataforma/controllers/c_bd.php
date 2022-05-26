@@ -96,6 +96,17 @@ class Bd
 			return true;
 		}
 
+		$options = [
+			'conn'      => $conn,        // Conexão utilizada.
+			'query'     => $sql,         // Query executada.
+			'tableName' => $tableName,   // Tabela principal da Query executada.
+			'queryType' => $queryType,   // Tipo da query.
+			'type'      => $type,        // Tipo da query.
+			'obs'       => $obs,         // Observação aberta.
+		];
+
+		return self::insertLog($options);
+
 		// Acrescenta valores padrão.
 		$fields = [
 
@@ -110,6 +121,58 @@ class Bd
 			'queryType'     => $queryType,                        // Tipo da query.
 			'type'          => $type,                             // Tipo da query.
 			'obs'           => $obs,                              // Observação aberta.
+		];
+
+		// Acrescenta valores default caso não exista.
+		$fields = array_merge(self::acrescentaValoresObrigatorios(true), $fields);
+
+		// Realiza a insersão do log gerado.
+		self::insert('logs', $fields);
+
+		// Gravou log.
+		return true;
+	}
+
+	/**
+	 * Função para gravação das visitas em páginas.
+	 *
+	 * @return void
+	 */
+	public static function gravaLogVisita()
+	{
+		$options = [
+			'conn'       => 0,                                 // Conexão.
+			'query'      => \classes\Detect::device(),         // Dispositivo.
+			'tableName'  => \classes\Detect::language(),       // Linguagem do usuário.
+			'queryType'  => \classes\Detect::os(),             // Sistema operacional.
+			'type'       => 'VISITA',                          // Tipo do LOG.
+			'obs'        => \classes\Detect::browser(),        // Navegador.
+		];
+
+		return self::insertLog($options);
+	}
+
+	/**
+	 * Função para insersão padrão de logs.
+	 *
+	 * @param array $options
+	 * @return bool
+	 */
+	public static function insertLog($options)
+	{
+		// Acrescenta valores padrão.
+		$fields = [
+			'url'           => VC_INFOURL['url_friendly'],        // Url atual.
+			'attr'          => json_encode(VC_INFOURL['attr']),   // Parametros da url atual.
+			'post'          => json_encode($_POST),               // POST.
+			'get'           => json_encode($_GET),                // GET.
+			'controller'    => VC_INFOURL['controller_path'],     // GET.
+			'conn'          => $options['conn'],                  // Conexão utilizada.
+			'query'         => $options['query'],                 // Query executada.
+			'tableName'     => $options['tableName'],             // Tabela principal da Query executada.
+			'queryType'     => $options['queryType'],             // Tipo da query.
+			'type'          => $options['type'],                  // Tipo da query.
+			'obs'           => $options['obs'],                   // Observação aberta.
 		];
 
 		// Acrescenta valores default caso não exista.
@@ -909,7 +972,7 @@ class Bd
 		}
 
 		// Tipos de query encontradas no select.
-		$tipos = ['UPDATE', 'CREATE', 'DROP', 'INSERT', 'DELETE', 'PROCEDURE', 'SELECT'];
+		$tipos = ['CREATE ', 'UPDATE ', 'DROP ', 'INSERT ', 'DELETE ', 'PROCEDURE ', 'SELECT '];
 
 		// Converte para upper case.
 		$string = strtoupper($sql);

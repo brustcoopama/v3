@@ -67,7 +67,8 @@ class Page extends \controllers\Api
 			return false;
 		}
 
-		// Executa página.
+		// Salva visita no banco de dados.
+		$this->gravaVisita();
 
 		// Verifica a segurança da página.
 		$seguroPage = $this->segurancaPage();
@@ -157,7 +158,7 @@ class Page extends \controllers\Api
 
 		// Carrega os arquivos do parâmetro page template.
 		foreach ($this->params['structure'] as $key => $value) {
-			
+
 			// Parâmetro recebe o conteúdo HTML do arquivo na posição.
 			$this->params['structure'][$key] = file_get_contents($this->params['paths']['M_PATH_ESTRUTURA'] . $key . '/' . $value . '.html');
 		}
@@ -175,6 +176,19 @@ class Page extends \controllers\Api
 		}
 
 		return true;
+	}
+
+	/**
+	 * Função que grava a visita na página no banco de dados.
+	 *
+	 * @return void
+	 */
+	private function gravaVisita()
+	{
+		if ($this->params['config']['bd'] && $this->params['config']['visita']) {
+			// Salva a visita na página.
+			\controllers\Bd::gravaLogVisita();
+		}
 	}
 
 	/**

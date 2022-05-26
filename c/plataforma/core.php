@@ -199,6 +199,7 @@ class Core
 		require_once VC_PATHS['P_PATH_CLASSES'] . 'Session.php';
 		require_once VC_PATHS['P_PATH_CLASSES'] . 'FeedBackMessagens.php';
 		require_once VC_PATHS['P_PATH_CLASSES'] . 'TratamentoDados.php';
+		require_once VC_PATHS['P_PATH_CLASSES'] . 'Detect.php';
 
 		// Finaliza função.
 		return true;
@@ -406,7 +407,7 @@ class Core
 
 			// Informações view
 			'view_path' 			=> VC_PATHS['M_PATH_VIEW'] . 'index.html',  // Path completo da view.
-			'url_friendly' 			=> '/',   									// Url amigável da view.
+			'url_friendly' 			=> VC_PATHS['M_NAME'] . '/',   				// Url amigável da view.
 			'view_file' 			=> 'index.html',                         	// Nome do arquivo da view completa incluindo extensão.
 
 			// Informações controller
@@ -427,9 +428,9 @@ class Core
 		// Página tem controller
 		if ($is_file_controller) {
 			// Monta info controller.
-			$infoUrl['controller_class_name'] = 'IndexControllerPage';                    	// Caminho e nome completo da controller._name;
+			$infoUrl['controller_class_name'] = 'IndexControllerPage';                    		// Caminho e nome completo da controller._name;
 			$infoUrl['controller_path']       = VC_PATHS['M_PATH_CONTROLLER'] . 'index.php';	// Path completo da controller.NTROLLER . $path_tmp . '.php';
-			$infoUrl['controller_file']       = 'index.php';  								// Nome da controller completo.
+			$infoUrl['controller_file']       = 'index.php';  									// Nome da controller completo.
 		} else {
 			// Monta info controller default.
 			$infoUrl['controller_class_name'] = 'DefaultControllerPage';
