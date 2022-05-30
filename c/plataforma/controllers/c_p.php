@@ -424,7 +424,7 @@ class Plataforma
                 }
 
                 // Monta caminho do arquivo.
-                $path_arquivo = $this->params['paths']['PATH_CONTROL'] . $key . '/' . $this->params['paths']['M_BD'] . $value . '.php';
+                $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $this->params['paths']['M_BD'] . $value . '.php';
 
                 // Carrega arquivo.
                 if (file_exists($path_arquivo)) {
@@ -466,7 +466,7 @@ class Plataforma
             }
 
             // Monta caminho do arquivo.
-            $path_arquivo = $this->params['paths']['PATH_CONTROL'] . $key . '/' . $pasta . $value . '.php';
+            $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $pasta . $value . '.php';
 
             // Carrega arquivo.
             if (file_exists($path_arquivo)) {
@@ -503,7 +503,7 @@ class Plataforma
             }
 
             // Monta caminho do arquivo.
-            $path_arquivo = $this->params['paths']['PATH_CONTROL'] . $key . '/' . $pasta . $value . '.php';
+            $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $pasta . $value . '.php';
 
             // Carrega arquivo.
             if (file_exists($path_arquivo)) {

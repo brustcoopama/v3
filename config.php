@@ -475,7 +475,7 @@ $vc_paths['PATH_RAIZ'] 		= str_replace('\\', '/', getcwd()) . '/';   		// Caminh
 $vc_paths['PATH_URL']  		= $path_raiz_url;                           		// Caminho completo da URL.
 $vc_paths['BASE']      		= $path_dir_base;                           		// Pasta entre domínio e pasta da plataforma.
 $vc_paths['DIR']       		= "c/";                                     		// Pasta onde guarda todos os arquivos da plataforma (controle).
-$vc_paths['PATH']      		= $vc_paths['BASE'] . $vc_paths['DIR'];  			// Caminho para a pasta de controle.
+$vc_paths['PATH']      		= $vc_paths['DIR'];  			// Caminho para a pasta de controle.
 
 // Paths da Plataforma.
 $vc_paths['P_RAIZ']             = $vc_paths['PATH'] . "plataforma/";            // Caminho para pasta dos arquivos da plataforma.
@@ -505,7 +505,8 @@ $vc_paths['P_UPLOADS']     	= 'src/midias/uploads/';  		// Mídias específicas 
 
 
 // API
-$vc_paths['A_RAIZ']  		= $vc_paths['PATH'] . 'api/';              			// Pasta onde guarda todas as APIs.
+$vc_paths['A_DIR']  		= 'api/';              			// Pasta onde guarda todas as APIs.
+$vc_paths['A_RAIZ']  		= $vc_paths['PATH'] . $vc_paths['A_DIR'];              			// Pasta onde guarda todas as APIs.
 $vc_paths['A_NAME']  		= v3\Core::getApi($vc_paths['A_RAIZ']);              // Nome da API atual.
 $vc_paths['A_ATIVO'] 		= ($vc_paths['A_NAME']) ? 1 : 0;                       	// É uma API.
 $vc_paths['A_PATH']  		= $vc_paths['A_RAIZ'] . $vc_paths['A_NAME'] . '/';  	// Caminho completo da API atual.
@@ -539,9 +540,10 @@ $vc_paths['A_MIDIAS']      		= "src/midias/";          						// Pasta que guarda
 $vc_paths['A_UPLOADS']     		= "src/midias/uploads/";  						// Pasta que guarda mídias específicas de upload.
 
 // Módulo
-$vc_paths['M_RAIZ']    		= $vc_paths['PATH'] . 'modulos/';          			// Pasta onde guarda todas as APIs.
+$vc_paths['M_DIR']    		= 'modulos/';          								// Pasta onde guarda todas as APIs.
+$vc_paths['M_RAIZ']    		= $vc_paths['PATH'] . $vc_paths['M_DIR'];          	// PATH onde guarda todas as APIs.
 $vc_paths['M_DEFAULT'] 		= 'www';                                         	// Pasta onde guarda todas as APIs.
-$vc_paths['M_NAME']    		= v3\Core::getModulo($vc_paths['M_RAIZ'], $vc_paths['M_DEFAULT']);           // Nome da API atual.
+$vc_paths['M_NAME']    		= v3\Core::getModulo($vc_paths['M_RAIZ'], $vc_paths['M_DEFAULT']);           // Nome do Módulo atual.
 $vc_paths['M_ATIVO']   		= ($vc_paths['M_NAME']) ? 1 : 0;                       	// É uma API.
 $vc_paths['M_PATH']    		= $vc_paths['M_RAIZ'] . $vc_paths['M_NAME'] . '/';  	// Caminho completo da API atual.
 
