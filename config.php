@@ -463,6 +463,7 @@ define("VC_CONFIG", [
  * * *******************
  */
 
+ // todo RETIRAR PARA VER SE VAI DAR ALGUM ERRO.
 // Paths iniciais
 // $vc_paths['RAIZ_DIR']     	= str_replace('\\', '/', getcwd()) . '/';        	// Caminho completo do sistema .
 // $vc_paths['RAIZ_URL']     	= $path_raiz_url;                                	// Caminho completo da URL.

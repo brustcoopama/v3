@@ -644,10 +644,9 @@ class Security extends \controllers\Plataforma
         $this->params['tokens']['pageApi'] = \classes\TokenPlataforma::createApi($url);
 
 
-
-
+        
         // Verifica se NÃO tem dados de transações e sai.
-        if (empty($_POST) && sizeof($_GET) == 1) {
+        if (empty($_POST) && (sizeof($_GET) == 0 || (sizeof($_GET) == 1 && isset($_GET['url'])))) {
             return true;
         }
 
@@ -656,7 +655,7 @@ class Security extends \controllers\Plataforma
 
             // Mensagem para usuário.
             \classes\FeedBackMessagens::addDanger('Transações', 'Token não informado. Transações de dados interrompida.');
-
+            
             return false;
         }
 
