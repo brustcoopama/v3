@@ -110,10 +110,10 @@ class ModeloRestritoControllerPage extends \moduloControllers\Page
             'sessionTimeOut'    => (60 * 30),
 
             // Caminho para página de login.
-            'loginPage'         => $this->params['paths']['M_NAME'] . '/login/',
+            'loginPage'         => '/' . $this->params['paths']['DIR_BASE'] . 'login/',
 
             // Caminho para página restrita.
-            'restrictPage'      => $this->params['paths']['M_NAME'] . '/admin/',
+            'restrictPage'      => '/' . $this->params['paths']['DIR_BASE'] . 'admin/',
 
             // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes. 1 exige.
             'permission'        => '111111111',

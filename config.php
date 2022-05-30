@@ -754,10 +754,10 @@ define("VC_SECURITY", [
 	'sessionTimeOut'    => (60 * 30),
 
 	// Caminho para página de login.
-	'loginPage'         => 'www/login/',
+	'loginPage'         => '/' . $path_dir_base . VC_PATHS['M_NAME'] . '/login/',
 
 	// Caminho para página restrita.
-	'restrictPage'      => 'www/admin/',
+	'restrictPage'      => '/' . $path_dir_base . VC_PATHS['M_NAME'] . '/admin/',
 
 	// Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
 	'permission'        => '111111111',

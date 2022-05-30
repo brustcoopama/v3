@@ -393,8 +393,7 @@ class Security extends \controllers\Plataforma
             if ($this->params['infoUrl']['url'] != $this->params['security']['loginPage']) {
 
                 // Monta caminho para página de login
-                $url_login = $this->params['paths']['RAIZ_URL'] . $this->params['security']['loginPage'];
-                $url_login = '/' . $this->params['security']['loginPage'];
+                $url_login = $this->params['security']['loginPage'];
 
                 // Guarda URL que quer ir (urlTarget) na sessão geral.
                 \classes\Session::setOptions('urlTarget', '/' . $this->params['infoUrl']['url']);
@@ -407,7 +406,7 @@ class Security extends \controllers\Plataforma
                     // Garante que vai redirecionar.
                     exit;
                 } else {
-                    echo '{ "msg":"Sem permissão."}';
+                    echo '{"msg":"Sem permissão."}';
                     exit;
                 }
             }

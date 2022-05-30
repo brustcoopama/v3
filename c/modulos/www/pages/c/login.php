@@ -110,10 +110,10 @@ class LoginControllerPage extends \moduloControllers\Page
             'sessionTimeOut'    => (60 * 30),
 
             // Caminho para página de login.
-            'loginPage'         => $this->params['paths']['M_NAME'] . '/login/',
+            'loginPage'         => '/' . $this->params['paths']['DIR_BASE'] . 'login/',
 
             // Caminho para página restrita.
-            'restrictPage'      => '/' . $this->params['paths']['M_NAME'] . '/admin/',
+            'restrictPage'      => '/' . $this->params['paths']['DIR_BASE'] . 'admin/',
 
             // Permissões personalizadas da página atual. [9] Menu, Início, Adicionar, Editar, Listar (Básico), Listar Completo, Deletar, API, Testes.
             'permission'        => '111111111',
@@ -487,6 +487,10 @@ class LoginControllerPage extends \moduloControllers\Page
         if (isset($this->params['infoUrl']['attr'][0]) && $this->params['infoUrl']['attr'][0] == 'sair') {
             // Mata a sessão do módulo atual.
             $this->deslogar();
+
+            // Faz voltar para tela de login.
+            header('location:' . $this->params['security']['loginPage']);
+            exit;
         }
 
         /**
@@ -520,7 +524,7 @@ class LoginControllerPage extends \moduloControllers\Page
         $sessionName = $this->params['security']['sessionName'];
         // $sessionName = 'session2';
 
-        $this->params['security']['restrictPage'] = '/00-modelo/login/';
+        // $this->params['security']['restrictPage'] = '/00-modelo/login/';
 
         // Conexão OFF BD.
         // if (!$_SESSION[$sessionName])
