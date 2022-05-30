@@ -129,7 +129,9 @@ class Core
 			require_once VC_PATHS['A_PATH'] . 'config.php';
 		} else {
 			// Configurações personalizadas
+			echo VC_PATHS['M_RAIZ'];
 			require_once VC_PATHS['M_PATH'] . 'config.php';
+			require_once VC_PATHS['DIR'] . 'config.php';
 		}
 		return true;
 	}

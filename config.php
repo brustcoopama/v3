@@ -464,11 +464,11 @@ define("VC_CONFIG", [
  */
 
 // Paths iniciais
-$vc_paths['RAIZ_DIR']     	= str_replace('\\', '/', getcwd()) . '/';        	// Caminho completo do sistema .
-$vc_paths['RAIZ_URL']     	= $path_raiz_url;                                	// Caminho completo da URL.
-$vc_paths['DIR_BASE']     	= $path_dir_base;                                	// Pasta entre domínio e pasta da plataforma.
-$vc_paths['DIR_CONTROL']  	= "c/";                                          	// Pasta onde guarda todos os arquivos da plataforma (controle).
-$vc_paths['PATH_CONTROL'] 	= $vc_paths['DIR_BASE'] . $vc_paths['DIR_CONTROL'];	// Caminho para a pasta de controle
+// $vc_paths['RAIZ_DIR']     	= str_replace('\\', '/', getcwd()) . '/';        	// Caminho completo do sistema .
+// $vc_paths['RAIZ_URL']     	= $path_raiz_url;                                	// Caminho completo da URL.
+// $vc_paths['DIR_BASE']     	= $path_dir_base;                                	// Pasta entre domínio e pasta da plataforma.
+// $vc_paths['DIR_CONTROL']  	= "c/";                                          	// Pasta onde guarda todos os arquivos da plataforma (controle).
+// $vc_paths['PATH_CONTROL'] 	= $vc_paths['DIR_BASE'] . $vc_paths['DIR_CONTROL'];	// Caminho para a pasta de controle
 
 // Paths iniciais
 $vc_paths['PATH_RAIZ'] 		= str_replace('\\', '/', getcwd()) . '/';   		// Caminho completo do HD até o index.
