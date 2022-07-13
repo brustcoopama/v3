@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use classes\FeedBackMessagens;
+
 /**
  * Class: plataforma
  * Version: 3.0.0
@@ -404,32 +406,28 @@ class Plataforma
             require_once $this->params['paths']['P_PATH_BD'] . 'BdPermissions.php';
 
             // Carrega os BDs passados nos parâmetros da controler. 
-            foreach ($this->params['bd'] as $key => $value) {
+            foreach ($this->params['bd'] as $key => $origem) {
 
-                // Verifica qual módulo acessará e monta a pasta.
-                $modulo = explode('/', $key);
-                $pasta = '';
-                switch ($modulo[0]) {
-                    case 'modulos':
-                        $pasta = $this->params['paths']['M_BD'];
-                        break;
-                    case 'api':
-                        # code...
-                        $pasta = $this->params['paths']['A_BD'];
-                        break;
-                    case 'plataforma':
-                        # code...
-                        $pasta = $this->params['paths']['P_BD'];
-                        break;
+                // Tabelas do módulo
+                foreach ($origem as $bdTable) {
+
+                    $base = $this->params['paths']['PATH'] . 'modulos/' . $key . '/';
+                    if ($key == "plataforma") {
+                        $base = $this->params['paths']['PATH'] . $key . '/';
+                    }
+
+                    // Monta caminho do arquivo.
+                    $path_arquivo = $base . $this->params['paths']['M_BD'] . $bdTable . '.php';
+                   
+                    // Carrega arquivo.
+                    if (file_exists($path_arquivo)) {
+                        require_once $path_arquivo;
+                    }else{
+                        // Avisa que não foi possível carregar Classe de tabela.
+                        FeedBackMessagens::addWarning('Tabela não incluida.', "A classe da tabela $bdTable não existe. Verifique o nome.");
+                    }
                 }
-
-                // Monta caminho do arquivo.
-                $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $this->params['paths']['M_BD'] . $value . '.php';
-
-                // Carrega arquivo.
-                if (file_exists($path_arquivo)) {
-                    require_once $path_arquivo;
-                }
+                
             }
         }
     }
@@ -446,32 +444,28 @@ class Plataforma
     {
 
         // Carrega os BDs passados nos parâmetros da controler. 
-        foreach ($this->params['classes'] as $key => $value) {
+        foreach ($this->params['classes'] as $key => $origem) {
 
-            // Verifica qual módulo acessará e monta a pasta.
-            $modulo = explode('/', $key);
-            $pasta = '';
-            switch ($modulo[0]) {
-                case 'modulos':
-                    $pasta = $this->params['paths']['M_CLASSES'];
-                    break;
-                case 'api':
-                    # code...
-                    $pasta = $this->params['paths']['A_CLASSES'];
-                    break;
-                case 'plataforma':
-                    # code...
-                    $pasta = $this->params['paths']['P_CLASSES'];
-                    break;
+            // Classes do módulo
+            foreach ($origem as $class) {
+
+                $base = $this->params['paths']['PATH'] . 'modulos/' . $key . '/' . $this->params['paths']['M_CLASSES'];
+                if ($key == "plataforma") {
+                    $base = $this->params['paths']['PATH'] . $key . '/' . $this->params['paths']['P_CLASSES'];
+                }
+
+                // Monta caminho do arquivo.
+                $path_arquivo = $base . $class . '.php';
+               
+                // Carrega arquivo.
+                if (file_exists($path_arquivo)) {
+                    require_once $path_arquivo;
+                }else{
+                    // Avisa que não foi possível carregar Classe de tabela.
+                    FeedBackMessagens::addWarning('Classe não incluida.', "A classe $class não existe. Verifique o nome.");
+                }
             }
 
-            // Monta caminho do arquivo.
-            $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $pasta . $value . '.php';
-
-            // Carrega arquivo.
-            if (file_exists($path_arquivo)) {
-                require_once $path_arquivo;
-            }
         }
     }
 
@@ -487,28 +481,49 @@ class Plataforma
     {
 
         // Carrega os BDs passados nos parâmetros da controler. 
-        foreach ($this->params['controllers'] as $key => $value) {
+        foreach ($this->params['controllers'] as $key => $origem) {
 
-            // Verifica qual módulo acessará e monta a pasta.
-            $modulo = explode('/', $key);
-            $pasta = '';
-            switch ($modulo[0]) {
-                case 'modulos':
-                    $pasta = $this->params['paths']['M_CONTROLLER'];
-                    break;
-                case 'api':
-                    # code...
-                    $pasta = $this->params['paths']['A_FUNCTIONS'];
-                    break;
+            // Classes do módulo
+            foreach ($origem as $controller) {
+
+                $base = $this->params['paths']['PATH'] . 'modulos/' . $key . '/' . $this->params['paths']['M_CONTROLLER'];
+
+                // Monta caminho do arquivo.
+                $path_arquivo = $base . $controller . '.php';
+               
+                // Carrega arquivo.
+                if (file_exists($path_arquivo)) {
+                    require_once $path_arquivo;
+                }else{
+                    // Avisa que não foi possível carregar Classe de tabela.
+                    FeedBackMessagens::addWarning('Classe não incluida.', "A classe $controller não existe. Verifique o nome.");
+                }
             }
 
-            // Monta caminho do arquivo.
-            $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $pasta . $value . '.php';
 
-            // Carrega arquivo.
-            if (file_exists($path_arquivo)) {
-                require_once $path_arquivo;
-            }
+            // todo - OLD - APAGAR
+            // // Verifica qual módulo acessará e monta a pasta.
+            // $modulo = explode('/', $key);
+            // $pasta = '';
+            // switch ($modulo[0]) {
+            //     case 'modulos':
+            //         $pasta = $this->params['paths']['M_CONTROLLER'];
+            //         break;
+            //     case 'api':
+            //         # code...
+            //         $pasta = $this->params['paths']['A_FUNCTIONS'];
+            //         break;
+            // }
+
+            // // Monta caminho do arquivo.
+            // $path_arquivo = $this->params['paths']['PATH'] . $key . '/' . $pasta . $value . '.php';
+
+            // // Carrega arquivo.
+            // if (file_exists($path_arquivo)) {
+            //     require_once $path_arquivo;
+            // }
+            // todo - OLD - APAGAR
+
         }
     }
 

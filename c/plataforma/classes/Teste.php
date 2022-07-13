@@ -2,8 +2,6 @@
 
 namespace classes;
 
-echo '<br>' . __FILE__;
-
 class Teste
 {
     public static function start()

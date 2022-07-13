@@ -219,17 +219,21 @@ class LoginControllerPage extends \moduloControllers\Page
          * Procura dentro da pasta BD.
          */
         $params['bd'] = [
-            // Módulo atual
-            'modulos/' . $this->params['paths']['M_NAME'] => 'BdTeste',
 
-            // Outro módulo
-            // 'modulos/www' => 'BdTeste',
+            // Módulo atual.
+            $this->params['paths']['M_NAME'] => [
+                // 'BdTeste',
+            ],
 
-            // API módulo
-            // 'api/00-modelo' => 'BdTeste',
+            // Módulo www.
+            'www' => [
+                // 'BdTeste',
+            ],
 
-            // Plataforma
-            // 'plataforma' => 'BdTeste',
+            // Módulo plataforma.
+            'plataforma' => [
+                // 'BdTeste',
+            ],
         ];
 
         /**

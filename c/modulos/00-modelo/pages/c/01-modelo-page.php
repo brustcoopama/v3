@@ -217,19 +217,24 @@ class ModeloPageControllerPage extends \moduloControllers\Page
          * * *******************
          * Otimização das funções de banco de dados que serão usadas na controller.
          * Procura dentro da pasta BD.
+         * Colocar o nome da classe (case sensitive) e não do arquivo.
          */
         $params['bd'] = [
-            // Módulo atual
-            'modulos/' . $this->params['paths']['M_NAME'] => 'BdTeste',
 
-            // Outro módulo
-            // 'modulos/www' => 'BdTeste',
+            // Módulo atual.
+            $this->params['paths']['M_NAME'] => [
+                // 'BdTeste',
+            ],
 
-            // API módulo
-            // 'api/00-modelo' => 'BdTeste',
+            // Módulo www.
+            'www' => [
+                // 'BdTeste',
+            ],
 
-            // Plataforma
-            // 'plataforma' => 'BdTeste',
+            // Módulo plataforma.
+            'plataforma' => [
+                // 'BdTeste',
+            ],
         ];
 
         /**
@@ -237,6 +242,7 @@ class ModeloPageControllerPage extends \moduloControllers\Page
          * * *******************
          * Otimização das funções que serão usadas na controller.
          * Necessário chamar todas as dependências que classes usa.
+         * Colocar o nome da classe (case sensitive) e não do arquivo.
          */
         $params['classes'] = [
             // Módulo atual
@@ -257,6 +263,7 @@ class ModeloPageControllerPage extends \moduloControllers\Page
          * * *******************
          * Reutilização de funções staticas em outras controllers do mesmo módulo.
          * Necessário chamar todas as dependências que controller usa na função.
+         * Colocar o nome do arquivo e não da classe.
          */
         $params['controllers'] = [
             // Módulo atual
